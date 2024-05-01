@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cktckjqddvnl6"]
+
+[ext_resource type="Script" path="res://fluid_htn_tests/fluid_htn_tests.gd" id="1_v4iqe"]
+
+[node name="HtnTests" type="Node2D"]
+script = ExtResource("1_v4iqe")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_right = 400.0
+offset_bottom = 400.0
