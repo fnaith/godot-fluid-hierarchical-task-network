@@ -1,0 +1,501 @@
+You're standing in an empty room of white tapestries. There's no doors or windows here.
+[Enter]
+
+In front of you there is a little bottle on a table. Around the neck of the bottle there is a paper label, with the words 'DRINK ME' beautifully printed on it in large letters.
+[Enter]
+
+On the ground lies a rusty, old sword.
+[Enter]
+
+Now, what to do..?
+slash sword
+
+---------------------- DECOMP LOG --------------------------
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 0: Item Sub-domains
+        - Item Sub-domains: Selector.IsValid:Success!
+                - Item Sub-domains: Selector.OnDecompose:Task index: 0: Bottle sub-domain
+                - Bottle sub-domain: Selector.IsValid:Success!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 0: Bottle is broken
+                                - Bottle is broken: PrimitiveTask.IsValid check
+                                        - GOAL: * Bottle: FuncCondition.IsValid:False
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:GOAL: * Bottle is not valid!
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Bottle is broken.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Get Bottle: CompoundTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Get Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 2: Open Bottle Sub-domain
+                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Open Bottle: CompoundTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Open Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Open Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 3: Drink Bottle Sub-domain
+                        - Drink Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drink Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Drink Bottle: CompoundTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Drink Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drink Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drink Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 4: Break Bottle Sub-domain
+                        - Break Bottle Sub-domain: Selector.IsValid:Success!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Break Bottle
+                                        - GOAL: Break Bottle: FuncCondition.IsValid:False
+                                - Break Bottle: CompoundTask.IsValid:Failed:GOAL: Break Bottle is not valid!
+                                - Break Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Break Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 1: Throw Bottle
+                                        - GOAL: Throw Bottle: FuncCondition.IsValid:False
+                                - Throw Bottle: CompoundTask.IsValid:Failed:GOAL: Throw Bottle is not valid!
+                                - Throw Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Throw Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 2: Slash Bottle
+                                        - GOAL: Slash Bottle: FuncCondition.IsValid:False
+                                - Slash Bottle: CompoundTask.IsValid:Failed:GOAL: Slash Bottle is not valid!
+                                - Slash Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Slash Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Break Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 5: Drop Bottle Sub-domain
+                        - Drop Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drop Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drop Bottle
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Drop Bottle: CompoundTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Drop Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 6: Already has bottle
+                                - Already has bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already has bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 7: Already opened bottle
+                                - Already opened bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already opened bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 8: Already emptied bottle
+                                - Already emptied bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already emptied bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 9: Not holding bottle to drop
+                                - Not holding bottle to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding bottle to drop.IsValid returned false!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Failed: Decomposing Bottle sub-domain failed.
+                - Item Sub-domains: Selector.OnDecompose:Task index: 1: Sword sub-domain
+                - Sword sub-domain: Selector.IsValid:Success!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 0: Get Sword Sub-domain
+                        - Get Sword Sub-domain: Selector.IsValid:Success!
+                                - Get Sword Sub-domain: Selector.OnDecompose:Task index: 0: Get Sword
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Get Sword: CompoundTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Get Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 1: Drop Sword Sub-domain
+                        - Drop Sword Sub-domain: Selector.IsValid:Success!
+                                - Drop Sword Sub-domain: Selector.OnDecompose:Task index: 0: Drop Sword
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Drop Sword: CompoundTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Drop Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 2: Already has sword
+                                - Already has sword: PrimitiveTask.IsValid check
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Already has sword: PrimitiveTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Already has sword: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Already has sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 3: Not holding sword to drop
+                                - Not holding sword to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding sword to drop.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 4: Slash
+                                - GOAL: Slash Air: FuncCondition.IsValid:True
+                        - Slash: CompoundTask.IsValid:Success:GOAL: Slash Air is valid!
+                        - Slash: Selector.IsValid:Success!
+                                - Slash: Selector.OnDecompose:Task index: 0: Slash Air Action Sub-domain
+                                - Slash Air Action Sub-domain: Selector.IsValid:Success!
+                                        - Slash Air Action Sub-domain: Selector.OnDecompose:Task index: 0: Slash Air
+                                                - Slash Air: PrimitiveTask.IsValid check
+                                                        - GOAL: Slash Air: FuncCondition.IsValid:True
+                                                - Slash Air: PrimitiveTask.IsValid:Success:GOAL: Slash Air is valid!
+                                                        - Has Weapon: FuncCondition.IsValid:False
+                                                - Slash Air: PrimitiveTask.IsValid:Failed:Has Weapon is not valid!
+                                                - Slash Air: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                                        - Slash Air Action Sub-domain: Selector.OnDecomposeTask:Failed:Task Slash Air.IsValid returned false!
+                                - Slash: Selector.OnDecomposeCompoundTask:Failed: Decomposing Slash Air Action Sub-domain failed.
+                                - Slash: Selector.OnDecompose:Task index: 1: Pick up sword, then slash with it
+                                - Pick up sword, then slash with it: Sequence.IsValid:Success!
+                                        - Pick up sword, then slash with it: Sequence.OnDecompose:Task index: 0: Temporary change goal
+                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                        - Get Sword Goal: ActionEffect.Apply:PlanOnly
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeTask:Succeeded!
+                                        - Pick up sword, then slash with it: Sequence.OnDecompose:Task index: 1: Get Sword Sub-domain
+                                        - Get Sword Sub-domain: Selector.IsValid:Success!
+                                                - Get Sword Sub-domain: Selector.OnDecompose:Task index: 0: Get Sword
+                                                        - GOAL: Get Sword: FuncCondition.IsValid:True
+                                                - Get Sword: CompoundTask.IsValid:Success:GOAL: Get Sword is valid!
+                                                - Get Sword: Selector.IsValid:Success!
+                                                        - Get Sword: Selector.OnDecompose:Task index: 0: Get Sword
+                                                                - Get Sword: PrimitiveTask.IsValid check
+                                                                        - Has NOT Weapon: FuncCondition.IsValid:True
+                                                                - Get Sword: PrimitiveTask.IsValid:Success:Has NOT Weapon is valid!
+                                                                - Get Sword: PrimitiveTask.IsValid:Success!
+                                                        - Get Sword: Selector.OnDecomposeTask:Pushed Get Sword to plan!
+                                                                - Get Sword: PrimitiveTask.ApplyEffects
+                                                                        - Has Weapon: ActionEffect.Apply:PlanAndExecute
+                                                                        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                        - Get Sword: Selector.OnDecomposeTask:Succeeded!
+                                                - Get Sword Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Get Sword:Pushed Get Sword to plan!
+                                                - Get Sword Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeCompoundTask:Decomposing Get Sword Sub-domain:Pushed Get Sword to plan!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                        - Pick up sword, then slash with it: Sequence.OnDecompose:Task index: 2: Temporary change goal
+                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                        - Slash Air Goal: ActionEffect.Apply:PlanOnly
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeTask:Succeeded!
+                                        - Pick up sword, then slash with it: Sequence.OnDecompose:Task index: 3: Slash Air Action Sub-domain
+                                        - Slash Air Action Sub-domain: Selector.IsValid:Success!
+                                                - Slash Air Action Sub-domain: Selector.OnDecompose:Task index: 0: Slash Air
+                                                        - Slash Air: PrimitiveTask.IsValid check
+                                                                - GOAL: Slash Air: FuncCondition.IsValid:True
+                                                        - Slash Air: PrimitiveTask.IsValid:Success:GOAL: Slash Air is valid!
+                                                                - Has Weapon: FuncCondition.IsValid:True
+                                                        - Slash Air: PrimitiveTask.IsValid:Success:Has Weapon is valid!
+                                                        - Slash Air: PrimitiveTask.IsValid:Success!
+                                                - Slash Air Action Sub-domain: Selector.OnDecomposeTask:Pushed Slash Air to plan!
+                                                        - Slash Air: PrimitiveTask.ApplyEffects
+                                                                - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                - Slash Air Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeCompoundTask:Decomposing Slash Air Action Sub-domain:Pushed Slash Air to plan!
+                                        - Pick up sword, then slash with it: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                - Slash: Selector.OnDecomposeCompoundTask:Decomposing Pick up sword, then slash with it:Pushed Temporary change goal to plan!
+                                - Slash: Selector.OnDecomposeCompoundTask:Decomposing Pick up sword, then slash with it:Pushed Get Sword to plan!
+                                - Slash: Selector.OnDecomposeCompoundTask:Decomposing Pick up sword, then slash with it:Pushed Temporary change goal to plan!
+                                - Slash: Selector.OnDecomposeCompoundTask:Decomposing Pick up sword, then slash with it:Pushed Slash Air to plan!
+                                - Slash: Selector.OnDecomposeCompoundTask:Succeeded!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Slash:Pushed Temporary change goal to plan!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Slash:Pushed Get Sword to plan!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Slash:Pushed Temporary change goal to plan!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Slash:Pushed Slash Air to plan!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Sword sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Sword sub-domain:Pushed Get Sword to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Sword sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Sword sub-domain:Pushed Slash Air to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Succeeded!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Get Sword to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Slash Air to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Succeeded!
+-------------------------------------------------------------
+You pick up the sword
+---------------------- DECOMP LOG --------------------------
+        - Has NOT Weapon: FuncCondition.IsValid:True
+        - Has Weapon: ActionEffect.Apply:PlanAndExecute
+        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+-------------------------------------------------------------
+You slash your sword through the air elegantly!
+---------------------- DECOMP LOG --------------------------
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 0: Item Sub-domains
+        - Item Sub-domains: Selector.IsValid:Success!
+                - Item Sub-domains: Selector.OnDecompose:Task index: 0: Bottle sub-domain
+                - Bottle sub-domain: Selector.IsValid:Success!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 0: Bottle is broken
+                                - Bottle is broken: PrimitiveTask.IsValid check
+                                        - GOAL: * Bottle: FuncCondition.IsValid:False
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:GOAL: * Bottle is not valid!
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Bottle is broken.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Get Bottle: CompoundTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Get Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 2: Open Bottle Sub-domain
+                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Open Bottle: CompoundTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Open Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Open Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 3: Drink Bottle Sub-domain
+                        - Drink Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drink Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Drink Bottle: CompoundTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Drink Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drink Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drink Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 4: Break Bottle Sub-domain
+                        - Break Bottle Sub-domain: Selector.IsValid:Success!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Break Bottle
+                                        - GOAL: Break Bottle: FuncCondition.IsValid:False
+                                - Break Bottle: CompoundTask.IsValid:Failed:GOAL: Break Bottle is not valid!
+                                - Break Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Break Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 1: Throw Bottle
+                                        - GOAL: Throw Bottle: FuncCondition.IsValid:False
+                                - Throw Bottle: CompoundTask.IsValid:Failed:GOAL: Throw Bottle is not valid!
+                                - Throw Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Throw Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 2: Slash Bottle
+                                        - GOAL: Slash Bottle: FuncCondition.IsValid:False
+                                - Slash Bottle: CompoundTask.IsValid:Failed:GOAL: Slash Bottle is not valid!
+                                - Slash Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Slash Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Break Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 5: Drop Bottle Sub-domain
+                        - Drop Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drop Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drop Bottle
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Drop Bottle: CompoundTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Drop Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 6: Already has bottle
+                                - Already has bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already has bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 7: Already opened bottle
+                                - Already opened bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already opened bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 8: Already emptied bottle
+                                - Already emptied bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already emptied bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 9: Not holding bottle to drop
+                                - Not holding bottle to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding bottle to drop.IsValid returned false!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Failed: Decomposing Bottle sub-domain failed.
+                - Item Sub-domains: Selector.OnDecompose:Task index: 1: Sword sub-domain
+                - Sword sub-domain: Selector.IsValid:Success!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 0: Get Sword Sub-domain
+                        - Get Sword Sub-domain: Selector.IsValid:Success!
+                                - Get Sword Sub-domain: Selector.OnDecompose:Task index: 0: Get Sword
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Get Sword: CompoundTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Get Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 1: Drop Sword Sub-domain
+                        - Drop Sword Sub-domain: Selector.IsValid:Success!
+                                - Drop Sword Sub-domain: Selector.OnDecompose:Task index: 0: Drop Sword
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Drop Sword: CompoundTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Drop Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 2: Already has sword
+                                - Already has sword: PrimitiveTask.IsValid check
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Already has sword: PrimitiveTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Already has sword: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Already has sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 3: Not holding sword to drop
+                                - Not holding sword to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding sword to drop.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 4: Slash
+                                - GOAL: Slash Air: FuncCondition.IsValid:True
+                        - Slash: CompoundTask.IsValid:Success:GOAL: Slash Air is valid!
+                        - Slash: Selector.IsValid:Success!
+                                - Slash: Selector.OnDecompose:Task index: 0: Slash Air Action Sub-domain
+                                - Slash Air Action Sub-domain: Selector.IsValid:Success!
+                                        - Slash Air Action Sub-domain: Selector.OnDecompose:Task index: 0: Slash Air
+                                                - Slash Air: PrimitiveTask.IsValid check
+                                                        - GOAL: Slash Air: FuncCondition.IsValid:True
+                                                - Slash Air: PrimitiveTask.IsValid:Success:GOAL: Slash Air is valid!
+                                                        - Has Weapon: FuncCondition.IsValid:True
+                                                - Slash Air: PrimitiveTask.IsValid:Success:Has Weapon is valid!
+                                                - Slash Air: PrimitiveTask.IsValid:Success!
+                                        - Slash Air Action Sub-domain: Selector.OnDecomposeTask:Pushed Slash Air to plan!
+                                                - Slash Air: PrimitiveTask.ApplyEffects
+                                                        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                        - Slash Air Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                - Slash: Selector.OnDecomposeCompoundTask:Decomposing Slash Air Action Sub-domain:Pushed Slash Air to plan!
+                                - Slash: Selector.OnDecomposeCompoundTask:Succeeded!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Slash:Pushed Slash Air to plan!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Sword sub-domain:Pushed Slash Air to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Succeeded!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Slash Air to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Succeeded!
+        - GOAL: Slash Air: FuncCondition.IsValid:True
+        - Has Weapon: FuncCondition.IsValid:True
+        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 0: Item Sub-domains
+        - Item Sub-domains: Selector.IsValid:Success!
+                - Item Sub-domains: Selector.OnDecompose:Task index: 0: Bottle sub-domain
+                - Bottle sub-domain: Selector.IsValid:Success!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 0: Bottle is broken
+                                - Bottle is broken: PrimitiveTask.IsValid check
+                                        - GOAL: * Bottle: FuncCondition.IsValid:False
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:GOAL: * Bottle is not valid!
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Bottle is broken.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Get Bottle: CompoundTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Get Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 2: Open Bottle Sub-domain
+                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Open Bottle: CompoundTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Open Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Open Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 3: Drink Bottle Sub-domain
+                        - Drink Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drink Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Drink Bottle: CompoundTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Drink Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drink Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drink Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 4: Break Bottle Sub-domain
+                        - Break Bottle Sub-domain: Selector.IsValid:Success!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Break Bottle
+                                        - GOAL: Break Bottle: FuncCondition.IsValid:False
+                                - Break Bottle: CompoundTask.IsValid:Failed:GOAL: Break Bottle is not valid!
+                                - Break Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Break Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 1: Throw Bottle
+                                        - GOAL: Throw Bottle: FuncCondition.IsValid:False
+                                - Throw Bottle: CompoundTask.IsValid:Failed:GOAL: Throw Bottle is not valid!
+                                - Throw Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Throw Bottle.IsValid returned false!
+                                - Break Bottle Sub-domain: Selector.OnDecompose:Task index: 2: Slash Bottle
+                                        - GOAL: Slash Bottle: FuncCondition.IsValid:False
+                                - Slash Bottle: CompoundTask.IsValid:Failed:GOAL: Slash Bottle is not valid!
+                                - Slash Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Break Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Slash Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Break Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 5: Drop Bottle Sub-domain
+                        - Drop Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drop Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drop Bottle
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Drop Bottle: CompoundTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Drop Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 6: Already has bottle
+                                - Already has bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Already has bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already has bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 7: Already opened bottle
+                                - Already opened bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Already opened bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already opened bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 8: Already emptied bottle
+                                - Already emptied bottle: PrimitiveTask.IsValid check
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:False
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:GOAL: Drink Bottle is not valid!
+                                - Already emptied bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Already emptied bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 9: Not holding bottle to drop
+                                - Not holding bottle to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Bottle: FuncCondition.IsValid:False
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Bottle is not valid!
+                                - Not holding bottle to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding bottle to drop.IsValid returned false!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Failed: Decomposing Bottle sub-domain failed.
+                - Item Sub-domains: Selector.OnDecompose:Task index: 1: Sword sub-domain
+                - Sword sub-domain: Selector.IsValid:Success!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 0: Get Sword Sub-domain
+                        - Get Sword Sub-domain: Selector.IsValid:Success!
+                                - Get Sword Sub-domain: Selector.OnDecompose:Task index: 0: Get Sword
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Get Sword: CompoundTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Get Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 1: Drop Sword Sub-domain
+                        - Drop Sword Sub-domain: Selector.IsValid:Success!
+                                - Drop Sword Sub-domain: Selector.OnDecompose:Task index: 0: Drop Sword
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Drop Sword: CompoundTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Drop Sword: Selector.IsValid:Failed:Preconditions not met!
+                                - Drop Sword Sub-domain: Selector.OnDecomposeTask:Failed:Task Drop Sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drop Sword Sub-domain failed.
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 2: Already has sword
+                                - Already has sword: PrimitiveTask.IsValid check
+                                        - GOAL: Get Sword: FuncCondition.IsValid:False
+                                - Already has sword: PrimitiveTask.IsValid:Failed:GOAL: Get Sword is not valid!
+                                - Already has sword: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Already has sword.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 3: Not holding sword to drop
+                                - Not holding sword to drop: PrimitiveTask.IsValid check
+                                        - GOAL: Drop Sword: FuncCondition.IsValid:False
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:GOAL: Drop Sword is not valid!
+                                - Not holding sword to drop: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Not holding sword to drop.IsValid returned false!
+                        - Sword sub-domain: Selector.OnDecompose:Task index: 4: Slash
+                                - GOAL: Slash Air: FuncCondition.IsValid:False
+                        - Slash: CompoundTask.IsValid:Failed:GOAL: Slash Air is not valid!
+                        - Slash: Selector.IsValid:Failed:Preconditions not met!
+                        - Sword sub-domain: Selector.OnDecomposeTask:Failed:Task Slash.IsValid returned false!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Failed: Decomposing Sword sub-domain failed.
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Item Sub-domains failed.
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 1: Failed
+                - Failed: PrimitiveTask.IsValid check
+                        - Failed to address goal: FuncCondition.IsValid:False
+                - Failed: PrimitiveTask.IsValid:Failed:Failed to address goal is not valid!
+                - Failed: PrimitiveTask.IsValid:Failed:Preconditions not met!
+        - Intro Screen Domain: Selector.OnDecomposeTask:Failed:Task Failed.IsValid returned false!
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 2: Idle
+                - Idle: PrimitiveTask.IsValid check
+                - Idle: PrimitiveTask.IsValid:Success!
+        - Intro Screen Domain: Selector.OnDecomposeTask:Pushed Idle to plan!
+                - Idle: PrimitiveTask.ApplyEffects
+        - Intro Screen Domain: Selector.OnDecomposeTask:Succeeded!
+-------------------------------------------------------------

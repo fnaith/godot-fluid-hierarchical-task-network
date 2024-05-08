@@ -1,0 +1,391 @@
+You're standing in an empty room of white tapestries. There's no doors or windows here.
+[Enter]
+
+In front of you there is a little bottle on a table. Around the neck of the bottle there is a paper label, with the words 'DRINK ME' beautifully printed on it in large letters.
+[Enter]
+
+On the ground lies a rusty, old sword.
+[Enter]
+
+Now, what to do..?
+drink bottle
+
+---------------------- DECOMP LOG --------------------------
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 0: Item Sub-domains
+        - Item Sub-domains: Selector.IsValid:Success!
+                - Item Sub-domains: Selector.OnDecompose:Task index: 0: Bottle sub-domain
+                - Bottle sub-domain: Selector.IsValid:Success!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 0: Bottle is broken
+                                - Bottle is broken: PrimitiveTask.IsValid check
+                                        - GOAL: * Bottle: FuncCondition.IsValid:True
+                                - Bottle is broken: PrimitiveTask.IsValid:Success:GOAL: * Bottle is valid!
+                                        - Bottle is broken: FuncCondition.IsValid:False
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Bottle is broken is not valid!
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Bottle is broken.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Get Bottle: CompoundTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Get Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 2: Open Bottle Sub-domain
+                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Open Bottle: CompoundTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Open Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Open Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 3: Drink Bottle Sub-domain
+                        - Drink Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drink Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:True
+                                - Drink Bottle: CompoundTask.IsValid:Success:GOAL: Drink Bottle is valid!
+                                - Drink Bottle: Selector.IsValid:Success!
+                                        - Drink Bottle: Selector.OnDecompose:Task index: 0: Already Has Opened Bottle?
+                                        - Already Has Opened Bottle?: Selector.IsValid:Success!
+                                                - Already Has Opened Bottle?: Selector.OnDecompose:Task index: 0: Drink Bottle Action Sub-domain
+                                                - Drink Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                        - Drink Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                                                - Drink Bottle: PrimitiveTask.IsValid check
+                                                                        - Has Bottle: FuncCondition.IsValid:False
+                                                                - Drink Bottle: PrimitiveTask.IsValid:Failed:Has Bottle is not valid!
+                                                                - Drink Bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                                                        - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Failed:Task Drink Bottle.IsValid returned false!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drink Bottle Action Sub-domain failed.
+                                                - Already Has Opened Bottle?: Selector.OnDecompose:Task index: 1: Get bottle, open it, then drink it!
+                                                - Get bottle, open it, then drink it!: Sequence.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 0: Temporary change goal
+                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                        - Open Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 1: Open Bottle Sub-domain
+                                                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                                                        - GOAL: Open Bottle: FuncCondition.IsValid:True
+                                                                - Open Bottle: CompoundTask.IsValid:Success:GOAL: Open Bottle is valid!
+                                                                - Open Bottle: Selector.IsValid:Success!
+                                                                        - Open Bottle: Selector.OnDecompose:Task index: 0: Already Has Bottle?
+                                                                        - Already Has Bottle?: Selector.IsValid:Success!
+                                                                                - Already Has Bottle?: Selector.OnDecompose:Task index: 0: Open Bottle Action Sub-domain
+                                                                                - Open Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                                                        - Open Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                                                                                - Open Bottle: PrimitiveTask.IsValid check
+                                                                                                        - Has Bottle: FuncCondition.IsValid:False
+                                                                                                - Open Bottle: PrimitiveTask.IsValid:Failed:Has Bottle is not valid!
+                                                                                                - Open Bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                                                                                        - Open Bottle Action Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Action Sub-domain failed.
+                                                                                - Already Has Bottle?: Selector.OnDecompose:Task index: 1: Get bottle and open it
+                                                                                - Get bottle and open it: Sequence.IsValid:Success!
+                                                                                        - Get bottle and open it: Sequence.OnDecompose:Task index: 0: Temporary change goal
+                                                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                                                        - Get Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeTask:Succeeded!
+                                                                                        - Get bottle and open it: Sequence.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                                                                                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                                                                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                                                                                        - GOAL: Get Bottle: FuncCondition.IsValid:True
+                                                                                                - Get Bottle: CompoundTask.IsValid:Success:GOAL: Get Bottle is valid!
+                                                                                                - Get Bottle: Selector.IsValid:Success!
+                                                                                                        - Get Bottle: Selector.OnDecompose:Task index: 0: Get Bottle
+                                                                                                                - Get Bottle: PrimitiveTask.IsValid check
+                                                                                                                       - Has NOT Bottle: FuncCondition.IsValid:True
+                                                                                                                - Get Bottle: PrimitiveTask.IsValid:Success:Has NOT Bottle is valid!
+                                                                                                                - Get Bottle: PrimitiveTask.IsValid:Success!
+                                                                                                        - Get Bottle: Selector.OnDecomposeTask:Pushed Get Bottle to plan!
+                                                                                                                - Get Bottle: PrimitiveTask.ApplyEffects
+                                                                                                                       - Has Bottle: ActionEffect.Apply:PlanAndExecute
+                                                                                                                       - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                                                                        - Get Bottle: Selector.OnDecomposeTask:Succeeded!
+                                                                                                - Get Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Get Bottle:Pushed Get Bottle to plan!
+                                                                                                - Get Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeCompoundTask:Decomposing Get Bottle Sub-domain:Pushed Get Bottle to plan!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                                                        - Get bottle and open it: Sequence.OnDecompose:Task index: 2: Temporary change goal
+                                                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                                                        - Open Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeTask:Succeeded!
+                                                                                        - Get bottle and open it: Sequence.OnDecompose:Task index: 3: Open Bottle Action Sub-domain
+                                                                                        - Open Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                                                                - Open Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                                                                                        - Open Bottle: PrimitiveTask.IsValid check
+                                                                                                                - Has Bottle: FuncCondition.IsValid:True
+                                                                                                        - Open Bottle: PrimitiveTask.IsValid:Success:Has Bottle is valid!
+                                                                                                                - Bottle is NOT Open: FuncCondition.IsValid:True
+                                                                                                        - Open Bottle: PrimitiveTask.IsValid:Success:Bottle is NOT Open is valid!
+                                                                                                        - Open Bottle: PrimitiveTask.IsValid:Success!
+                                                                                                - Open Bottle Action Sub-domain: Selector.OnDecomposeTask:Pushed Open Bottle to plan!
+                                                                                                        - Open Bottle: PrimitiveTask.ApplyEffects
+                                                                                                                - Open Bottle: ActionEffect.Apply:PlanAndExecute
+                                                                                                                - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                                                                - Open Bottle Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Action Sub-domain:Pushed Open Bottle to plan!
+                                                                                        - Get bottle and open it: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle and open it:Pushed Temporary change goal to plan!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle and open it:Pushed Get Bottle to plan!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle and open it:Pushed Temporary change goal to plan!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle and open it:Pushed Open Bottle to plan!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Bottle?:Pushed Temporary change goal to plan!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Bottle?:Pushed Get Bottle to plan!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Bottle?:Pushed Temporary change goal to plan!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Bottle?:Pushed Open Bottle to plan!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle:Pushed Temporary change goal to plan!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle:Pushed Get Bottle to plan!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle:Pushed Temporary change goal to plan!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle:Pushed Open Bottle to plan!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Sub-domain:Pushed Temporary change goal to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Sub-domain:Pushed Get Bottle to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Sub-domain:Pushed Temporary change goal to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Sub-domain:Pushed Open Bottle to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 2: Temporary change goal
+                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                        - Drink Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 3: Drink Bottle Action Sub-domain
+                                                        - Drink Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                                                        - Drink Bottle: PrimitiveTask.IsValid check
+                                                                                - Has Bottle: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Has Bottle is valid!
+                                                                                - Bottle is Open: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Bottle is Open is valid!
+                                                                                - Bottle is NOT Empty: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Bottle is NOT Empty is valid!
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success!
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Pushed Drink Bottle to plan!
+                                                                        - Drink Bottle: PrimitiveTask.ApplyEffects
+                                                                                - Drink Bottle: ActionEffect.Apply:PlanAndExecute
+                                                                                - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Drink Bottle Action Sub-domain:Pushed Drink Bottle to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Get Bottle to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Open Bottle to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Drink Bottle to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Succeeded!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Get Bottle to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Open Bottle to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Drink Bottle to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Succeeded!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Get Bottle to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Open Bottle to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Drink Bottle to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Get Bottle to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Open Bottle to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Drink Bottle to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Get Bottle to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Open Bottle to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Drink Bottle to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Succeeded!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Get Bottle to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Open Bottle to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Drink Bottle to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Succeeded!
+-------------------------------------------------------------
+---------------------- DECOMP LOG --------------------------
+-------------------------------------------------------------
+You pick up the bottle
+---------------------- DECOMP LOG --------------------------
+        - Has NOT Bottle: FuncCondition.IsValid:True
+        - Has Bottle: ActionEffect.Apply:PlanAndExecute
+        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+-------------------------------------------------------------
+---------------------- DECOMP LOG --------------------------
+        - Intro Screen Domain: Selector.OnDecompose:Task index: 0: Item Sub-domains
+        - Item Sub-domains: Selector.IsValid:Success!
+                - Item Sub-domains: Selector.OnDecompose:Task index: 0: Bottle sub-domain
+                - Bottle sub-domain: Selector.IsValid:Success!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 0: Bottle is broken
+                                - Bottle is broken: PrimitiveTask.IsValid check
+                                        - GOAL: * Bottle: FuncCondition.IsValid:True
+                                - Bottle is broken: PrimitiveTask.IsValid:Success:GOAL: * Bottle is valid!
+                                        - Bottle is broken: FuncCondition.IsValid:False
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Bottle is broken is not valid!
+                                - Bottle is broken: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                        - Bottle sub-domain: Selector.OnDecomposeTask:Failed:Task Bottle is broken.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 1: Get Bottle Sub-domain
+                        - Get Bottle Sub-domain: Selector.IsValid:Success!
+                                - Get Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Get Bottle
+                                        - GOAL: Get Bottle: FuncCondition.IsValid:False
+                                - Get Bottle: CompoundTask.IsValid:Failed:GOAL: Get Bottle is not valid!
+                                - Get Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Get Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Get Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Get Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 2: Open Bottle Sub-domain
+                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                        - GOAL: Open Bottle: FuncCondition.IsValid:False
+                                - Open Bottle: CompoundTask.IsValid:Failed:GOAL: Open Bottle is not valid!
+                                - Open Bottle: Selector.IsValid:Failed:Preconditions not met!
+                                - Open Bottle Sub-domain: Selector.OnDecomposeTask:Failed:Task Open Bottle.IsValid returned false!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Failed: Decomposing Open Bottle Sub-domain failed.
+                        - Bottle sub-domain: Selector.OnDecompose:Task index: 3: Drink Bottle Sub-domain
+                        - Drink Bottle Sub-domain: Selector.IsValid:Success!
+                                - Drink Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                        - GOAL: Drink Bottle: FuncCondition.IsValid:True
+                                - Drink Bottle: CompoundTask.IsValid:Success:GOAL: Drink Bottle is valid!
+                                - Drink Bottle: Selector.IsValid:Success!
+                                        - Drink Bottle: Selector.OnDecompose:Task index: 0: Already Has Opened Bottle?
+                                        - Already Has Opened Bottle?: Selector.IsValid:Success!
+                                                - Already Has Opened Bottle?: Selector.OnDecompose:Task index: 0: Drink Bottle Action Sub-domain
+                                                - Drink Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                        - Drink Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                                                - Drink Bottle: PrimitiveTask.IsValid check
+                                                                        - Has Bottle: FuncCondition.IsValid:True
+                                                                - Drink Bottle: PrimitiveTask.IsValid:Success:Has Bottle is valid!
+                                                                        - Bottle is Open: FuncCondition.IsValid:False
+                                                                - Drink Bottle: PrimitiveTask.IsValid:Failed:Bottle is Open is not valid!
+                                                                - Drink Bottle: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                                                        - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Failed:Task Drink Bottle.IsValid returned false!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Failed: Decomposing Drink Bottle Action Sub-domain failed.
+                                                - Already Has Opened Bottle?: Selector.OnDecompose:Task index: 1: Get bottle, open it, then drink it!
+                                                - Get bottle, open it, then drink it!: Sequence.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 0: Temporary change goal
+                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                        - Open Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 1: Open Bottle Sub-domain
+                                                        - Open Bottle Sub-domain: Selector.IsValid:Success!
+                                                                - Open Bottle Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                                                        - GOAL: Open Bottle: FuncCondition.IsValid:True
+                                                                - Open Bottle: CompoundTask.IsValid:Success:GOAL: Open Bottle is valid!
+                                                                - Open Bottle: Selector.IsValid:Success!
+                                                                        - Open Bottle: Selector.OnDecompose:Task index: 0: Already Has Bottle?
+                                                                        - Already Has Bottle?: Selector.IsValid:Success!
+                                                                                - Already Has Bottle?: Selector.OnDecompose:Task index: 0: Open Bottle Action Sub-domain
+                                                                                - Open Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                                                        - Open Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Open Bottle
+                                                                                                - Open Bottle: PrimitiveTask.IsValid check
+                                                                                                        - Has Bottle: FuncCondition.IsValid:True
+                                                                                                - Open Bottle: PrimitiveTask.IsValid:Success:Has Bottle is valid!
+                                                                                                        - Bottle is NOT Open: FuncCondition.IsValid:True
+                                                                                                - Open Bottle: PrimitiveTask.IsValid:Success:Bottle is NOT Open is valid!
+                                                                                                - Open Bottle: PrimitiveTask.IsValid:Success!
+                                                                                        - Open Bottle Action Sub-domain: Selector.OnDecomposeTask:Pushed Open Bottle to plan!
+                                                                                                - Open Bottle: PrimitiveTask.ApplyEffects
+                                                                                                        - Open Bottle: ActionEffect.Apply:PlanAndExecute
+                                                                                                        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                                                        - Open Bottle Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle Action Sub-domain:Pushed Open Bottle to plan!
+                                                                                - Already Has Bottle?: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Bottle?:Pushed Open Bottle to plan!
+                                                                        - Open Bottle: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Open Bottle:Pushed Open Bottle to plan!
+                                                                - Open Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Open Bottle Sub-domain:Pushed Open Bottle to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 2: Temporary change goal
+                                                                - Temporary change goal: PrimitiveTask.IsValid check
+                                                                - Temporary change goal: PrimitiveTask.IsValid:Success!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Pushed Temporary change goal to plan!
+                                                                - Temporary change goal: PrimitiveTask.ApplyEffects
+                                                                        - Drink Bottle Goal: ActionEffect.Apply:PlanOnly
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecompose:Task index: 3: Drink Bottle Action Sub-domain
+                                                        - Drink Bottle Action Sub-domain: Selector.IsValid:Success!
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecompose:Task index: 0: Drink Bottle
+                                                                        - Drink Bottle: PrimitiveTask.IsValid check
+                                                                                - Has Bottle: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Has Bottle is valid!
+                                                                                - Bottle is Open: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Bottle is Open is valid!
+                                                                                - Bottle is NOT Empty: FuncCondition.IsValid:True
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success:Bottle is NOT Empty is valid!
+                                                                        - Drink Bottle: PrimitiveTask.IsValid:Success!
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Pushed Drink Bottle to plan!
+                                                                        - Drink Bottle: PrimitiveTask.ApplyEffects
+                                                                                - Drink Bottle: ActionEffect.Apply:PlanAndExecute
+                                                                                - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+                                                                - Drink Bottle Action Sub-domain: Selector.OnDecomposeTask:Succeeded!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Decomposing Drink Bottle Action Sub-domain:Pushed Drink Bottle to plan!
+                                                        - Get bottle, open it, then drink it!: Sequence.OnDecomposeCompoundTask:Succeeded!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Open Bottle to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Temporary change goal to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Decomposing Get bottle, open it, then drink it!:Pushed Drink Bottle to plan!
+                                                - Already Has Opened Bottle?: Selector.OnDecomposeCompoundTask:Succeeded!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Open Bottle to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Temporary change goal to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Decomposing Already Has Opened Bottle?:Pushed Drink Bottle to plan!
+                                        - Drink Bottle: Selector.OnDecomposeCompoundTask:Succeeded!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Open Bottle to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Temporary change goal to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle:Pushed Drink Bottle to plan!
+                                - Drink Bottle Sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Open Bottle to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Temporary change goal to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Decomposing Drink Bottle Sub-domain:Pushed Drink Bottle to plan!
+                        - Bottle sub-domain: Selector.OnDecomposeCompoundTask:Succeeded!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Open Bottle to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Temporary change goal to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Decomposing Bottle sub-domain:Pushed Drink Bottle to plan!
+                - Item Sub-domains: Selector.OnDecomposeCompoundTask:Succeeded!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Open Bottle to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Temporary change goal to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Decomposing Item Sub-domains:Pushed Drink Bottle to plan!
+        - Intro Screen Domain: Selector.OnDecomposeCompoundTask:Succeeded!
+-------------------------------------------------------------
+You unscrew the cork of the bottle
+---------------------- DECOMP LOG --------------------------
+        - Has Bottle: FuncCondition.IsValid:True
+        - Bottle is NOT Open: FuncCondition.IsValid:True
+        - Open Bottle: ActionEffect.Apply:PlanAndExecute
+        - Try Complete Goal: ActionEffect.Apply:PlanAndExecute
+-------------------------------------------------------------
+You take a sip from the bottle
+As the liquid runs down your throat and fills your belly, something weird starts happening. Your vision blur!
+[Enter]

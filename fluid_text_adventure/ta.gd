@@ -1,0 +1,16 @@
+class_name Ta
+extends Object
+
+enum GoalState {
+	NONE,
+	GET_BOTTLE,
+	DROP_BOTTLE,
+	OPEN_BOTTLE,
+	DRINK_BOTTLE,
+	BREAK_BOTTLE,
+	SLASH_BOTTLE,
+	THROW_BOTTLE,
+	GET_SWORD,
+	DROP_SWORD,
+	SLASH_AIR,
+}

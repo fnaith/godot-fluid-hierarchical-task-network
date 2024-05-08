@@ -23,6 +23,11 @@ enabled=PackedStringArray("res://addons/fluid_htn/plugin.cfg")
 
 import/fbx/enabled=false
 
+[network]
+
+limits/debugger/max_chars_per_second=327680
+limits/debugger/max_queued_messages=20480
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

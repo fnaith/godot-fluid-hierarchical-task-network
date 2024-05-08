@@ -1,0 +1,13 @@
+You're standing in an empty room of white tapestries. There's no doors or windows here.
+[Enter]
+
+In front of you there is a little bottle on a table. Around the neck of the bottle there is a paper label, with the words 'DRINK ME' beautifully printed on it in large letters.
+[Enter]
+
+On the ground lies a rusty, old sword.
+[Enter]
+
+Now, what to do..?
+
+
+Sorry, I don't know how to do that yet!
