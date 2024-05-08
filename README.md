@@ -22,7 +22,7 @@ See Fluid HTN's [Getting started](https://github.com/ptrefall/fluid-hierarchical
 ## Examples
 
 - [fluid_htn_tests](https://github.com/fnaith/godot-fluid-hierarchical-task-network/tree/main/fluid_htn_tests) : test cases of [Fluid HTN](https://github.com/ptrefall/fluid-hierarchical-task-network/tree/master/Fluid-HTN.UnitTests) implemented in GDScript.
-- [fluid_smart_objects](https://github.com/fnaith/godot-fluid-hierarchical-task-network/tree/main/fluid_smart_objects) : simplified [Fluid Smart Objects](https://github.com/ptrefall/fluid-smart-objects) implemented in GDScript.
+- [fluid_smart_objects](https://github.com/fnaith/godot-fluid-hierarchical-task-network/tree/main/fluid_smart_objects) : a simplified [Fluid Smart Objects](https://github.com/ptrefall/fluid-smart-objects) implemented in GDScript.
 - [fluid_text_adventure](https://github.com/fnaith/godot-fluid-hierarchical-task-network/tree/main/fluid_text_adventure) : a simplified [Fluid Text Adventure](https://github.com/ptrefall/fluid-text-adventure) implemented in GDScript.
 
 ## Changes
