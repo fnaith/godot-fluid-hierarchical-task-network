@@ -46,7 +46,7 @@ Because GDScript doesn't support :
 ### Interface Changes
 
 - `Queue<ITask>` : repalced by `HtnPlan`, for better abstraction.
-- `IDecomposeAll` : merge into `ICompoundTask`, because checking class info hurts performance.
+- `IDecomposeAll` : merged into `ICompoundTask`, because checking class info hurts performance.
 - `IOperator`
   - Stop : return false if action failed.
   - Aborted : return false if action failed.
@@ -68,7 +68,7 @@ Because GDScript doesn't support :
 
 ### Changed Tests
 
-- `HtnSequenceTests` : chande `DecomposeRequiresContextInitFails_ExpectedBehavior` to `decompose_without_context_init__expected_behavior`, because GDScript can't init world_state_change_stack as null
+- `HtnSequenceTests` : change `DecomposeRequiresContextInitFails_ExpectedBehavior` to `decompose_without_context_init__expected_behavior`, because GDScript can't init _world_state_change_stack as null
 
 ### Deleted Tests
 

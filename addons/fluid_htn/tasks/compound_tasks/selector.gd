@@ -116,7 +116,7 @@ func on_decompose_task(ctx: HtnIContext, task: HtnITask, task_index: int, _old_s
 
 	if Htn.TaskType.SLOT == task.get_type():
 		var slot: HtnSlot = task
-		on_decompose_slot(ctx, slot, task_index, [], result)
+		return on_decompose_slot(ctx, slot, task_index, [], result)
 
 	result.copy(_plan)
 	var status = Htn.DecompositionStatus.FAILED if result.is_empty() else Htn.DecompositionStatus.SUCCEEDED
@@ -250,7 +250,8 @@ func on_decompose_slot(ctx: HtnIContext, task: HtnSlot, task_index: int, _old_st
 	var s = Htn.DecompositionStatus.FAILED if result.is_empty() else Htn.DecompositionStatus.SUCCEEDED
 
 	if ctx.is_log_decomposition():
-		_log(ctx, "Selector.OnDecomposeSlot:%d!" % s)
+		var s1 = "Succeeded" if result else "Failed"
+		_log(ctx, "Selector.OnDecomposeSlot:%s!" % s1)
 
 	return s
 

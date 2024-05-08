@@ -89,9 +89,8 @@ func is_valid(ctx: HtnIContext) -> bool:
 	var result = (null != _subtask)
 
 	if ctx.is_log_decomposition():
-		var s1 = "Success" if result else "Failed"
-		var s2 = "" if result else " not"
-		_log(ctx, "Slot.IsValid:%s:%s is%s valid!" % [s1, _name, s2])
+		var ok = "Success" if result else "Failed"
+		_log(ctx, "Slot.IsValid:%s!" % ok)
 
 	return result
 
