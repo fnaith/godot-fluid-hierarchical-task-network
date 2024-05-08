@@ -1,0 +1,68 @@
+At location 0
+Arrived at location 1
+Arrived at location 2
+---------------------- DECOMP LOG --------------------------
+        - Player: Selector.OnDecompose:Task index: 0: Slot 0
+        - Slot 0: Slot.IsValid:Failed!
+        - Player: Selector.OnDecomposeTask:Failed:Task Slot 0.IsValid returned false!
+        - Player: Selector.OnDecompose:Task index: 1: Walk about
+        - Walk about: Selector.IsValid:Success!
+                - Walk about: Selector.OnDecompose:Task index: 0: Walk about action
+                        - Walk about action: PrimitiveTask.IsValid check
+                                - At location 0: FuncCondition.IsValid:True
+                        - Walk about action: PrimitiveTask.IsValid:Success:At location 0 is valid!
+                        - Walk about action: PrimitiveTask.IsValid:Success!
+                - Walk about: Selector.OnDecomposeTask:Pushed Walk about action to plan!
+                        - Walk about action: PrimitiveTask.ApplyEffects
+                                - At location 1: ActionEffect.Apply:PlanAndExecute
+                - Walk about: Selector.OnDecomposeTask:Succeeded!
+        - Player: Selector.OnDecomposeCompoundTask:Decomposing Walk about:Pushed Walk about action to plan!
+        - Player: Selector.OnDecomposeCompoundTask:Succeeded!
+        - At location 0: FuncCondition.IsValid:True
+        - At location 1: ActionEffect.Apply:PlanAndExecute
+        - Player: Selector.OnDecompose:Task index: 0: Slot 0
+        - Slot 0: Slot.IsValid:Success!
+                - Important thing: Selector.OnDecompose:Task index: 0: Walk away
+                - Walk away: Selector.IsValid:Success!
+                        - Walk away: Selector.OnDecompose:Task index: 0: Walk away
+                                - Walk away: PrimitiveTask.IsValid check
+                                        - At location 1: FuncCondition.IsValid:True
+                                - Walk away: PrimitiveTask.IsValid:Success:At location 1 is valid!
+                                - Walk away: PrimitiveTask.IsValid:Success!
+                        - Walk away: Selector.OnDecomposeTask:Pushed Walk away to plan!
+                                - Walk away: PrimitiveTask.ApplyEffects
+                                        - At location 2: ActionEffect.Apply:PlanAndExecute
+                        - Walk away: Selector.OnDecomposeTask:Succeeded!
+                - Important thing: Selector.OnDecomposeCompoundTask:Decomposing Walk away:Pushed Walk away to plan!
+                - Important thing: Selector.OnDecomposeCompoundTask:Succeeded!
+        - Player: Selector.OnDecomposeSlot:Decomposing Slot 0:Pushed Walk away to plan!
+        - Player: Selector.OnDecomposeSlot:Succeeded!
+        - At location 1: FuncCondition.IsValid:True
+        - At location 2: ActionEffect.Apply:PlanAndExecute
+-------------------------------------------------------------
+Idle
+---------------------- DECOMP LOG --------------------------
+        - Player: Selector.OnDecompose:Task index: 0: Slot 0
+        - Slot 0: Slot.IsValid:Failed!
+        - Player: Selector.OnDecomposeTask:Failed:Task Slot 0.IsValid returned false!
+        - Player: Selector.OnDecompose:Task index: 1: Walk about
+        - Walk about: Selector.IsValid:Success!
+                - Walk about: Selector.OnDecompose:Task index: 0: Walk about action
+                        - Walk about action: PrimitiveTask.IsValid check
+                                - At location 0: FuncCondition.IsValid:False
+                        - Walk about action: PrimitiveTask.IsValid:Failed:At location 0 is not valid!
+                        - Walk about action: PrimitiveTask.IsValid:Failed:Preconditions not met!
+                - Walk about: Selector.OnDecomposeTask:Failed:Task Walk about action.IsValid returned false!
+        - Player: Selector.OnDecomposeCompoundTask:Failed: Decomposing Walk about failed.
+        - Player: Selector.OnDecompose:Task index: 2: Idle
+        - Idle: Selector.IsValid:Success!
+                - Idle: Selector.OnDecompose:Task index: 0: Idle action
+                        - Idle action: PrimitiveTask.IsValid check
+                        - Idle action: PrimitiveTask.IsValid:Success!
+                - Idle: Selector.OnDecomposeTask:Pushed Idle action to plan!
+                        - Idle action: PrimitiveTask.ApplyEffects
+                - Idle: Selector.OnDecomposeTask:Succeeded!
+        - Player: Selector.OnDecomposeCompoundTask:Decomposing Idle:Pushed Idle action to plan!
+        - Player: Selector.OnDecomposeCompoundTask:Succeeded!
+-------------------------------------------------------------
+The End!

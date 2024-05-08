@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://blb1ru5ab55vw"]
+
+[ext_resource type="Script" path="res://fluid_smart_objects/fluid_smart_objects.gd" id="1_wy5aj"]
+
+[node name="fluid_smart_objects" type="Node2D"]
+script = ExtResource("1_wy5aj")
