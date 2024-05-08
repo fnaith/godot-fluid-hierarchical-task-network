@@ -60,6 +60,8 @@ Because GDScript doesn't support :
   - set_operator : return false if _operator isn't null.
 - `BaseDomainBuilder`
   - `CompoundTask<P>(string name, P task)` : renamed to add_subtask
+- `DecompositionLogEntry`
+  - depth_to_string : add the `indent` parameter
 
 ### Renamed Tests
 

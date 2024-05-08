@@ -7,8 +7,8 @@ var _depth: int
 var _entry_type: Htn.LogEntryType
 var _entry: Variant
 
-static func depth_to_string(depth: int) -> String:
-	return "\t".repeat(depth) + "- "
+static func depth_to_string(depth: int, indent: String = "\t") -> String:
+	return indent.repeat(depth) + "- "
 
 func _init(name: String, description: String, depth: int, entry_type: Htn.LogEntryType,\
 		entry: Variant) -> void:
