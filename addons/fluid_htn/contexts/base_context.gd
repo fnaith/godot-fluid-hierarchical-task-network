@@ -9,6 +9,7 @@ var _initialized: bool = false
 var _dirty: bool = false
 var _context_state: Htn.ContextState = Htn.ContextState.EXECUTING
 var _current_decomposition_depth: int = 0
+var _planner_state: HtnIPlannerState
 var _method_traversal_record: Array[int] = []
 var _last_mtr: Array[int] = []
 var _mtr_debug: Array[String] = []
@@ -39,6 +40,9 @@ func get_current_decomposition_depth() -> int:
 	return _current_decomposition_depth
 func set_current_decomposition_depth(i: int) -> void:
 	_current_decomposition_depth = i
+
+func get_planner_state() -> HtnIPlannerState:
+	return _planner_state
 
 func get_method_traversal_record() -> Array[int]:
 	return _method_traversal_record

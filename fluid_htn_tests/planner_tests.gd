@@ -1,23 +1,6 @@
 class_name HtnPlannerTests
 extends Object
 
-static func get_plan_returns_clear_instance_at_start__expected_behavior() -> void:
-	var planner = HtnPlanner.new()
-
-	var plan = planner.get_plan()
-
-	HtnError.add_assert(plan.is_valid())
-	HtnError.add_assert(plan.is_empty())
-	HtnError.add_assert("" == HtnError.get_message())
-
-static func get_current_task_returns_null_at_start__expected_behavior() -> void:
-	var planner = HtnPlanner.new()
-
-	var task = planner.get_current_task()
-
-	HtnError.add_assert(null == task)
-	HtnError.add_assert("" == HtnError.get_message())
-
 static func tick_with_null_parameters_throws_nre__expected_behavior() -> void:
 	var planner = HtnPlanner.new()
 
@@ -63,10 +46,9 @@ static func tick_with_primitive_task_without_operator__expected_behavior() -> vo
 	domain.add_subtask(task1, task2)
 
 	planner.tick(domain, ctx)
-	var current_task = planner.get_current_task()
 
-	HtnError.add_assert(null == current_task)
-	HtnError.add_assert(Htn.TaskStatus.FAILURE == planner.get_last_status())
+	HtnError.add_assert(null == ctx.get_planner_state().get_current_task())
+	HtnError.add_assert(Htn.TaskStatus.FAILURE == ctx.get_planner_state().get_last_status())
 	HtnError.add_assert("" == HtnError.get_message())
 
 static func tick_with_func_operator_with_null_func__expected_behavior() -> void:
@@ -81,10 +63,9 @@ static func tick_with_func_operator_with_null_func__expected_behavior() -> void:
 	domain.add_subtask(task1, task2)
 
 	planner.tick(domain, ctx)
-	var current_task = planner.get_current_task()
 
-	HtnError.add_assert(null == current_task)
-	HtnError.add_assert(Htn.TaskStatus.FAILURE == planner.get_last_status())
+	HtnError.add_assert(null == ctx.get_planner_state().get_current_task())
+	HtnError.add_assert(Htn.TaskStatus.FAILURE == ctx.get_planner_state().get_last_status())
 	HtnError.add_assert("" == HtnError.get_message())
 
 static func tick_with_default_success_operator_wont_stack_overflows__expected_behavior() -> void:
@@ -100,10 +81,9 @@ static func tick_with_default_success_operator_wont_stack_overflows__expected_be
 	domain.add_subtask(task1, task2)
 
 	planner.tick(domain, ctx)
-	var current_task = planner.get_current_task()
 
-	HtnError.add_assert(null == current_task)
-	HtnError.add_assert(Htn.TaskStatus.SUCCESS == planner.get_last_status())
+	HtnError.add_assert(null == ctx.get_planner_state().get_current_task())
+	HtnError.add_assert(Htn.TaskStatus.SUCCESS == ctx.get_planner_state().get_last_status())
 	HtnError.add_assert("" == HtnError.get_message())
 
 static func tick_with_default_continue_operator__expected_behavior() -> void:
@@ -119,10 +99,9 @@ static func tick_with_default_continue_operator__expected_behavior() -> void:
 	domain.add_subtask(task1, task2)
 
 	planner.tick(domain, ctx)
-	var current_task = planner.get_current_task()
 
-	HtnError.add_assert(null != current_task)
-	HtnError.add_assert(Htn.TaskStatus.CONTINUE == planner.get_last_status())
+	HtnError.add_assert(null != ctx.get_planner_state().get_current_task())
+	HtnError.add_assert(Htn.TaskStatus.CONTINUE == ctx.get_planner_state().get_last_status())
 	HtnError.add_assert("" == HtnError.get_message())
 
 static func on_new_plan__expected_behavior() -> void:
@@ -130,7 +109,7 @@ static func on_new_plan__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_new_plan = func (p):
+	ctx.get_planner_state().on_new_plan = func (p):
 		result["test"] = (1 == p.size())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test")
@@ -150,7 +129,7 @@ static func on_replace_plan__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_replace_plan = func (op, ct, p):
+	ctx.get_planner_state().on_replace_plan = func (op, ct, p):
 		result["test"] = (op.is_empty() and null != ct and 1 == p.size())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test1")
@@ -182,7 +161,7 @@ static func on_new_task__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_new_task = func (t):
+	ctx.get_planner_state().on_new_task = func (t):
 		result["test"] = ("Sub-task" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test")
@@ -202,7 +181,7 @@ static func on_new_task_condition_failed__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_new_task_condition_failed = func (t, _c):
+	ctx.get_planner_state().on_new_task_condition_failed = func (t, _c):
 		result["test"] = ("Sub-task1" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test1")
@@ -240,7 +219,7 @@ static func on_stop_current_task__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_stop_current_task = func (t):
+	ctx.get_planner_state().on_stop_current_task = func (t):
 		result["test"] = ("Sub-task2" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test1")
@@ -272,7 +251,7 @@ static func on_current_task_completed_successfully__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_current_task_completed_successfully = func (t):
+	ctx.get_planner_state().on_current_task_completed_successfully = func (t):
 		result["test"] = ("Sub-task1" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test1")
@@ -304,7 +283,7 @@ static func on_apply_effect__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_apply_effect = func (e):
+	ctx.get_planner_state().on_apply_effect = func (e):
 		result["test"] = ("TestEffect" == e.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test1")
@@ -339,7 +318,7 @@ static func on_current_task_failed__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_current_task_failed = func (t):
+	ctx.get_planner_state().on_current_task_failed = func (t):
 		result["test"] = ("Sub-task" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test")
@@ -359,7 +338,7 @@ static func on_current_task_continues__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_current_task_continues = func (t):
+	ctx.get_planner_state().on_current_task_continues = func (t):
 		result["test"] = ("Sub-task" == t.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test")
@@ -379,7 +358,7 @@ static func on_current_task_executing_condition_failed__expected_behavior() -> v
 	var ctx = MyContext.new()
 	ctx.init()
 	var planner = HtnPlanner.new()
-	planner.on_current_task_executing_condition_failed = func (t, c):
+	ctx.get_planner_state().on_current_task_executing_condition_failed = func (t, c):
 		result["test"] = ("Sub-task" == t.get_name() and "TestCondition" == c.get_name())
 	var domain = HtnDomain.new("Test")
 	var task1 = HtnSelector.new("Test")
@@ -422,8 +401,8 @@ static func find_plan_if_condition_change_and_operator_is_continuous__expected_b
 	domain.add_subtask(select, action_b)
 
 	planner.tick(domain, ctx, false)
-	var plan = planner.get_plan()
-	var current_task = planner.get_current_task()
+	var plan = ctx.get_planner_state().get_plan()
+	var current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -436,8 +415,8 @@ static func find_plan_if_condition_change_and_operator_is_continuous__expected_b
 	ctx.set_done(true)
 
 	planner.tick(domain, ctx, true)
-	plan = planner.get_plan()
-	current_task = planner.get_current_task()
+	plan = ctx.get_planner_state().get_plan()
+	current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -469,8 +448,8 @@ static func find_plan_if_world_state_change_and_operator_is_continuous__expected
 	domain.add_subtask(select, action_b)
 
 	planner.tick(domain, ctx, false)
-	var plan = planner.get_plan()
-	var current_task = planner.get_current_task()
+	var plan = ctx.get_planner_state().get_plan()
+	var current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -483,8 +462,8 @@ static func find_plan_if_world_state_change_and_operator_is_continuous__expected
 	ctx.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
 
 	planner.tick(domain, ctx, true)
-	plan = planner.get_plan()
-	current_task = planner.get_current_task()
+	plan = ctx.get_planner_state().get_plan()
+	current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -520,8 +499,8 @@ static func find_plan_if_world_state_change_to_worse_mtr_and_operator_is_continu
 	domain.add_subtask(select, action_b)
 
 	planner.tick(domain, ctx, false)
-	var plan = planner.get_plan()
-	var current_task = planner.get_current_task()
+	var plan = ctx.get_planner_state().get_plan()
+	var current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -534,8 +513,8 @@ static func find_plan_if_world_state_change_to_worse_mtr_and_operator_is_continu
 	ctx.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
 
 	planner.tick(domain, ctx, true)
-	plan = planner.get_plan()
-	current_task = planner.get_current_task()
+	plan = ctx.get_planner_state().get_plan()
+	current_task = ctx.get_planner_state().get_current_task()
 
 	HtnError.add_assert(plan.is_valid())
 	HtnError.add_assert(plan.is_empty())
@@ -546,10 +525,6 @@ static func find_plan_if_world_state_change_to_worse_mtr_and_operator_is_continu
 	HtnError.add_assert("" == HtnError.get_message())
 
 static func run() -> void:
-	HtnError.reset_message()
-	get_plan_returns_clear_instance_at_start__expected_behavior()
-	HtnError.reset_message()
-	get_current_task_returns_null_at_start__expected_behavior()
 	HtnError.reset_message()
 	tick_with_null_parameters_throws_nre__expected_behavior()
 	HtnError.reset_message()

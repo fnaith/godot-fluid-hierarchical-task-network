@@ -4,88 +4,6 @@
 class_name HtnPlanner
 extends RefCounted
 
-#region FIELDS
-
-var _current_task: HtnITask
-var _plan: HtnPlan = HtnPlan.new()
-
-#endregion
-
-#region FIELDS
-
-var _last_status: Htn.TaskStatus
-
-func get_last_status() -> Htn.TaskStatus:
-	return _last_status
-func set_last_status(last_status: Htn.TaskStatus) -> void:
-	_last_status = last_status
-
-#endregion
-
-#region CALLBACKS
-
-## OnNewPlan(newPlan) is called when we found a new plan, and there is no
-## old plan to replace.
-var on_new_plan = func (new_plan: HtnPlan):
-	pass
-
-## OnReplacePlan(oldPlan, currentTask, newPlan) is called when we're about to replace the
-## current plan with a new plan.
-var on_replace_plan = func (old_plan: HtnPlan, current_task: HtnITask, new_plan: HtnPlan):
-	pass
-
-## OnNewTask(task) is called after we popped a new task off the current plan.
-var on_new_task = func (task: HtnITask):
-	pass
-
-## OnNewTaskConditionFailed(task, failedCondition) is called when we failed to
-## validate a condition on a new task.
-var on_new_task_condition_failed = func (task: HtnITask, failed_condition: HtnICondition):
-	pass
-
-## OnStopCurrentTask(task) is called when the currently running task was stopped
-## forcefully.
-var on_stop_current_task = func (task: HtnITask):
-	pass
-
-## OnCurrentTaskCompletedSuccessfully(task) is called when the currently running task
-## completes successfully, and before its effects are applied.
-var on_current_task_completed_successfully = func (task: HtnITask):
-	pass
-
-## OnApplyEffect(effect) is called for each effect of the type PlanAndExecute on a
-## completed task.
-var on_apply_effect = func (effect: HtnIEffect):
-	pass
-
-## OnCurrentTaskFailed(task) is called when the currently running task fails to complete.
-var on_current_task_failed = func (_task: HtnITask):
-	pass
-
-## OnCurrentTaskContinues(task) is called every tick that a currently running task
-## needs to continue.
-var on_current_task_continues = func (_task: HtnITask):
-	pass
-
-## OnCurrentTaskExecutingConditionFailed(task, condition) is called if an Executing Condition
-## fails. The Executing Conditions are checked before every call to task.Operator.Update(...).
-var on_current_task_executing_condition_failed = func (_task: HtnITask, _condition: HtnICondition):
-	pass
-
-#endregion
-
-func _init() -> void:
-	on_new_plan = null
-	on_replace_plan = null
-	on_new_task = null
-	on_new_task_condition_failed = null
-	on_stop_current_task = null
-	on_current_task_completed_successfully = null
-	on_apply_effect = null
-	on_current_task_failed = null
-	on_current_task_continues = null
-	on_current_task_executing_condition_failed = null
-
 #region TICK PLAN
 
 ## Call this with a domain and context instance to have the planner manage plan and task handling for the domain at
@@ -111,28 +29,29 @@ func tick(domain: HtnIDomain, ctx: HtnIContext, allow_immediate_replan: bool = t
 	# and if so, try to find a new plan.
 	if _should_find_new_plan(ctx):
 		decomposition_status = _try_find_new_plan(domain, ctx, decomposition_status)
-		is_trying_to_replace_plan = !_plan.is_empty()
+		is_trying_to_replace_plan = !ctx.get_planner_state().get_plan().is_empty()
 
 	# If the plan has more tasks, we try to select the next one.
-	if _can_select_next_task_in_plan():
+	if _can_select_next_task_in_plan(ctx):
 		# Select the next task, but check whether the conditions of the next task failed to validate.
 		if !_select_next_task_in_plan(domain, ctx):
 			return
 
 	# If the current task is a primitive task, we try to tick its operator.
-	if null != _current_task and Htn.TaskType.PRIMITIVE == _current_task.get_type():
-		var task: HtnIPrimitiveTask = _current_task
+	var current_task = ctx.get_planner_state().get_current_task()
+	if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
+		var task: HtnIPrimitiveTask = current_task
 		if !_try_tick_primitive_task_operator(domain, ctx, task, allow_immediate_replan):
 			return
 
 	# Check whether the planner failed to find a plan
-	if _has_failed_to_find_plan(is_trying_to_replace_plan, decomposition_status):
-		_last_status = Htn.TaskStatus.FAILURE
+	if _has_failed_to_find_plan(is_trying_to_replace_plan, decomposition_status, ctx):
+		ctx.get_planner_state().set_last_status(Htn.TaskStatus.FAILURE)
 
 ## Check whether state has changed or the current plan has finished running.
 ## and if so, try to find a new plan.
 func  _should_find_new_plan(ctx: HtnIContext) -> bool:
-	return ctx.is_dirty() or (null == _current_task and _plan.is_empty())
+	return ctx.is_dirty() or (null == ctx.get_planner_state().get_current_task() and ctx.get_planner_state().get_plan().is_empty())
 
 func _try_find_new_plan(domain: HtnDomain, ctx: HtnIContext, decomposition_status: Htn.DecompositionStatus) -> Htn.DecompositionStatus:
 	var last_partial_plan_queue = _prepare_dirty_world_state_for_replan(ctx)
@@ -193,22 +112,25 @@ func _has_found_new_plan(decomposition_status: Htn.DecompositionStatus) -> bool:
 			decomposition_status == Htn.DecompositionStatus.PARTIAL
 
 func _on_found_new_plan(ctx: HtnIContext, new_plan: HtnPlan) -> void:
-	if null != on_replace_plan and (!_plan.is_empty() or null != _current_task):
-		on_replace_plan.call(_plan, _current_task, new_plan)
-	elif null != on_new_plan and _plan.is_empty():
-		on_new_plan.call(new_plan)
+	var planner_state = ctx.get_planner_state()
+	var plan = planner_state.get_plan()
+	var current_task = planner_state.get_current_task()
+	if null != planner_state.on_replace_plan and (!plan.is_empty() or null != current_task):
+		planner_state.on_replace_plan.call(plan, current_task, new_plan)
+	elif null != planner_state.on_new_plan and plan.is_empty():
+		planner_state.on_new_plan.call(new_plan)
 
-	_plan.clear()
+	plan.clear()
 	while !new_plan.is_empty():
-		_plan.enqueue(new_plan.dequeue())
+		plan.enqueue(new_plan.dequeue())
 
 	# If a task was running from the previous plan, we stop it.
-	if null != _current_task and Htn.TaskType.PRIMITIVE == _current_task.get_type():
-		var t: HtnIPrimitiveTask = _current_task
-		if null != on_stop_current_task:
-			on_stop_current_task.call(t)
+	if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
+		var t: HtnIPrimitiveTask = current_task
+		if null != planner_state.on_stop_current_task:
+			planner_state.on_stop_current_task.call(t)
 		t.stop(ctx)
-		_current_task = null
+		planner_state.set_current_task(null)
 
 	# Copy the MTR into our LastMTR to represent the current plan's decomposition record
 	# that must be beat to replace the plan.
@@ -245,15 +167,19 @@ func _restore_last_method_traversal_record(ctx: HtnIContext) -> void:
 		ctx.get_last_mtr_debug().clear()
 
 ## If current task is null, we need to verify that the plan has more tasks queued.
-func _can_select_next_task_in_plan() -> bool:
-	return null == _current_task and !_plan.is_empty()
+func _can_select_next_task_in_plan(ctx: HtnIContext) -> bool:
+	var planner_state = ctx.get_planner_state()
+	return null == planner_state.get_current_task() and !planner_state.get_plan().is_empty()
 
 ## Dequeues the next task of the plan and checks its conditions. If a condition fails, we require a replan.
 func _select_next_task_in_plan(domain: HtnDomain, ctx: HtnIContext) -> bool:
-	_current_task = _plan.dequeue()
-	if null != _current_task:
-		if null != on_new_task:
-			on_new_task.call(_current_task)
+	var planner_state = ctx.get_planner_state()
+	var plan = planner_state.get_plan()
+	var current_task = plan.dequeue()
+	planner_state.set_current_task(current_task)
+	if null != current_task:
+		if null != planner_state.on_new_task:
+			planner_state.on_new_task.call(current_task)
 
 		return _is_conditions_valid(ctx)
 
@@ -261,41 +187,45 @@ func _select_next_task_in_plan(domain: HtnDomain, ctx: HtnIContext) -> bool:
 
 ## While we have a valid primitive task running, we should tick it each tick of the plan execution.
 func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
+	var planner_state = ctx.get_planner_state()
 	if null != task.get_operator():
 		if !_is_executing_conditions_valid(domain, ctx, task, allow_immediate_replan):
 			return false
 
-		_last_status = task.get_operator().update(ctx)
+		var last_status = task.get_operator().update(ctx)
+		planner_state.set_last_status(last_status)
 
 		# If the operation finished successfully, we set task to null so that we dequeue the next task in the plan the following tick.
-		if Htn.TaskStatus.SUCCESS == _last_status:
+		if Htn.TaskStatus.SUCCESS == last_status:
 			_on_operator_finished_successfully(domain, ctx, task, allow_immediate_replan)
 			return true
 
 		# If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
-		if Htn.TaskStatus.FAILURE == _last_status:
+		if Htn.TaskStatus.FAILURE == last_status:
 			_fail_entire_plan(ctx, task)
 			return true
 
 		# Otherwise the operation isn't done yet and need to continue.
-		if null != on_current_task_continues:
-			on_current_task_continues.call(task)
+		if null != planner_state.on_current_task_continues:
+			planner_state.on_current_task_continues.call(task)
 		return true
 
 	# This should not really happen if a domain is set up properly.
 	task.aborted(ctx)
-	_current_task = null
-	_last_status = Htn.TaskStatus.FAILURE
+	planner_state.set_current_task(null)
+	planner_state.set_last_status(Htn.TaskStatus.FAILURE)
 	return true
 
 ## Ensure conditions are valid when a new task is selected from the plan
 func _is_conditions_valid(ctx: HtnIContext) -> bool:
-	for condition in _current_task.get_conditions():
+	var planner_state = ctx.get_planner_state()
+	var current_task = planner_state.get_current_task()
+	for condition in current_task.get_conditions():
 		# If a condition failed, then the plan failed to progress! A replan is required.
 		if !condition.is_valid(ctx):
-			if null != on_new_task_condition_failed:
-				on_new_task_condition_failed.call(_current_task, condition)
-			_abort_task(ctx, _current_task)
+			if null != planner_state.on_new_task_condition_failed:
+				planner_state.on_new_task_condition_failed.call(current_task, condition)
+			_abort_task(ctx, current_task)
 
 			return false
 
@@ -310,18 +240,19 @@ func _abort_task(ctx: HtnIContext, task: HtnIPrimitiveTask) -> void:
 
 ## If the operation finished successfully, we set task to null so that we dequeue the next task in the plan the following tick.
 func _on_operator_finished_successfully(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> void:
-	if null != on_current_task_completed_successfully:
-		on_current_task_completed_successfully.call(task)
+	var planner_state = ctx.get_planner_state()
+	if null != planner_state.on_current_task_completed_successfully:
+		planner_state.on_current_task_completed_successfully.call(task)
 
 	# All effects that is a result of running this task should be applied when the task is a success.
 	for effect in task.get_effects():
 		if Htn.EffectType.PLAN_AND_EXECUTE == effect.get_type():
-			if null != on_apply_effect:
-				on_apply_effect.call(effect)
+			if null != planner_state.on_apply_effect:
+				planner_state.on_apply_effect.call(effect)
 			effect.apply(ctx)
 
-	_current_task = null
-	if _plan.is_empty():
+	planner_state.set_current_task(null)
+	if planner_state.get_plan().is_empty():
 		ctx.get_last_mtr().clear()
 
 		if ctx.is_debug_mtr():
@@ -334,6 +265,7 @@ func _on_operator_finished_successfully(domain: HtnDomain, ctx: HtnIContext, tas
 
 ## Ensure executing conditions are valid during plan execution
 func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
+	var on_current_task_executing_condition_failed = ctx.get_planner_state().on_current_task_executing_condition_failed
 	for condition in task.get_executing_conditions():
 		# If a condition failed, then the plan failed to progress! A replan is required.
 		if !condition.is_valid(ctx):
@@ -351,16 +283,18 @@ func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: H
 
 ## If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
 func _fail_entire_plan(ctx: HtnIContext, task: HtnIPrimitiveTask) -> void:
-	if null != on_current_task_failed:
-		on_current_task_failed.call(task)
+	var planner_state = ctx.get_planner_state()
+	if null != planner_state.on_current_task_failed:
+		planner_state.on_current_task_failed.call(task)
 
 	task.aborted(ctx)
 	_clear_plan_for_replan(ctx)
 
 ## Prepare the planner state and context for a clean replan
 func _clear_plan_for_replan(ctx: HtnIContext) -> void:
-	_current_task = null
-	_plan.clear()
+	var planner_state = ctx.get_planner_state()
+	planner_state.set_current_task(null)
+	planner_state.get_plan().clear()
 
 	ctx.get_last_mtr().clear()
 
@@ -372,8 +306,11 @@ func _clear_plan_for_replan(ctx: HtnIContext) -> void:
 	ctx.set_dirty(false)
 
 ## If current task is null, and plan is empty, and we're not trying to replace the current plan, and decomposition failed or was rejected, then the planner failed to find a plan.
-func _has_failed_to_find_plan(is_trying_to_replace_plan: bool, decomposition_status: Htn.DecompositionStatus) -> bool:
-	return null == _current_task and _plan.is_empty() and !is_trying_to_replace_plan and\
+func _has_failed_to_find_plan(is_trying_to_replace_plan: bool, decomposition_status: Htn.DecompositionStatus, ctx: HtnIContext) -> bool:
+	var planner_state = ctx.get_planner_state()
+	var current_task = planner_state.get_current_task()
+	var plan = planner_state.get_plan()
+	return null == current_task and plan.is_empty() and !is_trying_to_replace_plan and\
 			(Htn.DecompositionStatus.FAILED == decomposition_status or Htn.DecompositionStatus.REJECTED == decomposition_status)
 
 #endregion
@@ -381,24 +318,14 @@ func _has_failed_to_find_plan(is_trying_to_replace_plan: bool, decomposition_sta
 #region RESET
 
 func reset(ctx: HtnIContext) -> void:
-	_plan.clear()
+	var planner_state = ctx.get_planner_state()
+	var current_task = planner_state.get_current_task()
+	planner_state.get_plan().clear()
 
-	if null != _current_task and Htn.TaskType.PRIMITIVE == _current_task.get_type():
-		var task: HtnIPrimitiveTask = _current_task
+	if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
+		var task: HtnIPrimitiveTask = current_task
 		task.stop(ctx)
 
 	_clear_plan_for_replan(ctx)
-
-#endregion
-
-#region GETTERS
-
-## Get the current plan. This is not a copy of the running plan, so treat it as read-only.
-func get_plan() -> HtnPlan:
-	return _plan
-
-## Get the current task.
-func get_current_task() -> HtnITask:
-	return _current_task
 
 #endregion

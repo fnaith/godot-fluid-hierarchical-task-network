@@ -1,6 +1,6 @@
 # godot-fluid-hierarchical-task-network
 
-An [addon](https://godotengine.org/asset-library/asset/2944) for [Godot 4](https://godotengine.org/) that copycats [Fluid HTN](https://github.com/ptrefall/fluid-hierarchical-task-network) by [@ptrefall](https://github.com/ptrefall). The latest checked version is [a8b3b23](https://github.com/ptrefall/fluid-hierarchical-task-network/commit/a8b3b2388155daef94482c41dd19bb113b26114d)
+An [addon](https://godotengine.org/asset-library/asset/2944) for [Godot 4](https://godotengine.org/) that copycats [Fluid HTN](https://github.com/ptrefall/fluid-hierarchical-task-network) by [@ptrefall](https://github.com/ptrefall). The latest checked version is [607ba05](https://github.com/ptrefall/fluid-hierarchical-task-network/commit/607ba054b709c62b49675339122c2e12a4f20568)
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Stars](https://img.shields.io/github/stars/fnaith/godot-fluid-hierarchical-task-network.svg)
@@ -146,7 +146,7 @@ Because GDScript doesn't support :
 
 ## TODO
 
-- Minor optimization : replace while loop, reduce temp array, etc
+- Minor optimization : remove while loop, remove temp array, add HtnIPlannerState bool functions, etc
 - Add extended selectors from [Fluid HTN Extension library](https://github.com/ptrefall/fluid-hierarchical-task-network-ext).
 - Add examples : Fluid Goap Coffai
 - Remove debug info when exporting project by putting related code into `assert()`

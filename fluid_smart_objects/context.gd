@@ -20,6 +20,7 @@ func _init(player: SoPlayer, world: SoWorld) -> void:
 	super._init()
 	for i in WorldState.size():
 		_world_state.append(0)
+	_planner_state = HtnDefaultPlannerState.new()
 	_debug_mtr = true
 	_log_decomposition = true
 

@@ -27,6 +27,7 @@ func _init(player: TaPlayer) -> void:
 	super._init()
 	for i in WorldState.size():
 		_world_state.append(0)
+	_planner_state = HtnDefaultPlannerState.new()
 	_debug_mtr = false
 	_log_decomposition = true
 
