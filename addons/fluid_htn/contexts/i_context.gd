@@ -51,6 +51,10 @@ func get_current_decomposition_depth() -> int:
 func set_current_decomposition_depth(_i: int) -> void:
 	assert(false, "Don't use HtnIContext.set_current_decomposition_depth")
 
+func get_planner_state() -> HtnIPlannerState:
+	assert(false, "Don't use HtnIContext.get_planner_state")
+	return null
+
 ## The Method Traversal Record is used while decomposing a domain and
 ## records the valid decomposition indices as we go through our
 ## decomposition process.
