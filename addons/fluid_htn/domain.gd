@@ -33,10 +33,6 @@ func add_subtask(parent: HtnICompoundTask, subtask: HtnITask) -> void:
 	subtask.set_parent(parent)
 
 func add_slot(parent: HtnICompoundTask, slot: HtnSlot) -> void:
-	if parent == slot:
-		HtnError.set_message("Parent-task and Sub-task can't be the same instance!")
-		return
-
 	if _slots.has(slot.get_slot_id()):
 		HtnError.set_message("This slot id already exist in the domain definition!")
 		return

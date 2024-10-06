@@ -1,6 +1,6 @@
 # godot-fluid-hierarchical-task-network
 
-An [addon](https://godotengine.org/asset-library/asset/2944) for [Godot 4](https://godotengine.org/) that copycats [Fluid HTN](https://github.com/ptrefall/fluid-hierarchical-task-network) by [@ptrefall](https://github.com/ptrefall). The latest checked version is [607ba05](https://github.com/ptrefall/fluid-hierarchical-task-network/commit/607ba054b709c62b49675339122c2e12a4f20568)
+An [addon](https://godotengine.org/asset-library/asset/2944) for [Godot 4](https://godotengine.org/) that copycats [Fluid HTN](https://github.com/ptrefall/fluid-hierarchical-task-network) by [@ptrefall](https://github.com/ptrefall). The latest checked version is [500e692](https://github.com/ptrefall/fluid-hierarchical-task-network/commit/500e692fd844ec43d8c0bb4b5c1c476901dbd5de)
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Stars](https://img.shields.io/github/stars/fnaith/godot-fluid-hierarchical-task-network.svg)
