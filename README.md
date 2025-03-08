@@ -35,7 +35,7 @@ See Fluid HTN's [Getting started](https://github.com/ptrefall/fluid-hierarchical
 
 Because GDScript doesn't support :
 - Namespace : so all classes are added a prefix `Htn`.
-- Interface : so all C# interfaces are replaced by a class with assertions.
+- Interface : so all C# interfaces are replaced by a base class with assertions.
 - Properties Access Modifier : so all C# properties are replaced by access functions.
 - Function Overloading : so type names are added to functions.
 - Generic : so Script objects are being used to check the IContext type in debug builds. (checking class info hurts performance)
