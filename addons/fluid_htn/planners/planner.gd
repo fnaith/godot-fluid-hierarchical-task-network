@@ -202,7 +202,7 @@ func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task
 
 		# If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
 		if Htn.TaskStatus.FAILURE == last_status:
-			_fail_entire_plan(ctx, task)
+			_fail_entire_plan(domain, ctx, task, allow_immediate_replan)
 			return true
 
 		# Otherwise the operation isn't done yet and need to continue.
@@ -282,13 +282,16 @@ func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: H
 	return true
 
 ## If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
-func _fail_entire_plan(ctx: HtnIContext, task: HtnIPrimitiveTask) -> void:
+func _fail_entire_plan(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> void:
 	var planner_state = ctx.get_planner_state()
 	if null != planner_state.on_current_task_failed:
 		planner_state.on_current_task_failed.call(task)
 
 	task.aborted(ctx)
 	_clear_plan_for_replan(ctx)
+
+	if allow_immediate_replan:
+		tick(domain, ctx, false)
 
 ## Prepare the planner state and context for a clean replan
 func _clear_plan_for_replan(ctx: HtnIContext) -> void:

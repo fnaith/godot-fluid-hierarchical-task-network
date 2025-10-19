@@ -524,6 +524,150 @@ static func find_plan_if_world_state_change_to_worse_mtr_and_operator_is_continu
 	HtnError.add_assert(1 == ctx.get_method_traversal_record()[1])
 	HtnError.add_assert("" == HtnError.get_message())
 
+static func toggle_between_two_plans_with_only_planner_condition_wont_work__expected_behavior() -> void:
+	var c = MyContext.new()
+	c.init()
+
+	var planner = HtnPlanner.new()
+	var builder = HtnDomainBuilder.new(MyContext, "Test")
+	builder.action("A")
+	builder.condition("Is True", func (ctx):
+		return ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		ctx.set_done(true)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	builder.action("B")
+	builder.condition("Is False", func (ctx):
+		return !ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		ctx.set_done(false)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	var domain = builder.build()
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running Action A
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, false, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # Our change triggered a replan, but B can't beat A due to MTR. So A won't get invalidated.
+
+static func toggle_between_two_plans_with_executing_condition_will_work__expected_behavior() -> void:
+	var c = MyContext.new()
+	c.init()
+
+	var planner = HtnPlanner.new()
+	var builder = HtnDomainBuilder.new(MyContext, "Test")
+	builder.action("A")
+	builder.condition("Is True", func (ctx):
+		return ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.executing_condition("Is True", func (ctx):
+		return ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		ctx.set_done(true)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	builder.action("B")
+	builder.condition("Is False", func (ctx):
+		return !ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.executing_condition("Is True", func (ctx):
+		return !ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		ctx.set_done(false)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	var domain = builder.build()
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, false, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(!c.is_done()) # Out executing condition will realize that A is no longer valid, and we find B instead.
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
+static func toggle_between_two_plans_with_condition_success_in_operator_will_work__expected_behavior() -> void:
+	var c = MyContext.new()
+	c.init()
+
+	var planner = HtnPlanner.new()
+	var builder = HtnDomainBuilder.new(MyContext, "Test")
+	builder.action("A")
+	builder.condition("Is True", func (ctx):
+		return ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		if !ctx.has_bool_state(MyContext.WorldState.HAS_A):
+			return Htn.TaskStatus.SUCCESS
+		ctx.set_done(true)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	builder.action("B")
+	builder.condition("Is False", func (ctx):
+		return !ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		if ctx.has_bool_state(MyContext.WorldState.HAS_A):
+			return Htn.TaskStatus.SUCCESS
+		ctx.set_done(false)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	var domain = builder.build()
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, false, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(!c.is_done()) # Out executing condition will realize that A is no longer valid, and we find B instead.
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
+static func toggle_between_two_plans_with_condition_failure_in_operator_wont_work__expected_behavior() -> void:
+	var c = MyContext.new()
+	c.init()
+
+	var planner = HtnPlanner.new()
+	var builder = HtnDomainBuilder.new(MyContext, "Test")
+	builder.action("A")
+	builder.condition("Is True", func (ctx):
+		return ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		if !ctx.has_bool_state(MyContext.WorldState.HAS_A):
+			return Htn.TaskStatus.FAILURE
+		ctx.set_done(true)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	builder.action("B")
+	builder.condition("Is False", func (ctx):
+		return !ctx.has_bool_state(MyContext.WorldState.HAS_A))
+	builder.do(func (ctx):
+		if ctx.has_bool_state(MyContext.WorldState.HAS_A):
+			return Htn.TaskStatus.FAILURE
+		ctx.set_done(false)
+		return Htn.TaskStatus.CONTINUE)
+	builder.end()
+	var domain = builder.build()
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, false, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(!c.is_done()) # Out executing condition will realize that A is no longer valid, and we find B instead.
+
+	c.set_bool_state(MyContext.WorldState.HAS_A, true, Htn.EffectType.PERMANENT)
+	planner.tick(domain, c)
+	HtnError.add_assert(c.is_done()) # We're running A
+
 static func run() -> void:
 	HtnError.reset_message()
 	tick_with_null_parameters_throws_nre__expected_behavior()
@@ -567,3 +711,11 @@ static func run() -> void:
 	find_plan_if_world_state_change_and_operator_is_continuous__expected_behavior()
 	HtnError.reset_message()
 	find_plan_if_world_state_change_to_worse_mtr_and_operator_is_continuous__expected_behavior()
+	HtnError.reset_message()
+	toggle_between_two_plans_with_only_planner_condition_wont_work__expected_behavior()
+	HtnError.reset_message()
+	toggle_between_two_plans_with_executing_condition_will_work__expected_behavior()
+	HtnError.reset_message()
+	toggle_between_two_plans_with_condition_success_in_operator_will_work__expected_behavior()
+	HtnError.reset_message()
+	toggle_between_two_plans_with_condition_failure_in_operator_wont_work__expected_behavior()
