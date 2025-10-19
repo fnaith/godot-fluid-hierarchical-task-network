@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bxh5t1trtryof"]
 
-[ext_resource type="Script" path="res://fluid_text_adventure/fluid_text_adventure.gd" id="1_46gfs"]
+[ext_resource type="Script" uid="uid://con61lspo2h18" path="res://fluid_text_adventure/fluid_text_adventure.gd" id="1_46gfs"]
 
 [node name="fluid_text_adventure" type="Node2D"]
 script = ExtResource("1_46gfs")
