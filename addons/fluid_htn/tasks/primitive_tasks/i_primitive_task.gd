@@ -35,10 +35,12 @@ func add_effect(_effect: HtnIEffect) -> HtnITask:
 func apply_effects(_ctx: HtnIContext) -> void:
 	assert(false, "Don't use HtnIPrimitiveTask.add_effect")
 
+## Graceful end of task execution.
 func stop(_ctx: HtnIContext) -> bool:
 	assert(false, "Don't use HtnIPrimitiveTask.stop")
 	return false
 
-func aborted(_ctx: HtnIContext) -> bool:
-	assert(false, "Don't use HtnIPrimitiveTask.aborted")
+## Forced termination of task execution.
+func abort(_ctx: HtnIContext) -> bool:
+	assert(false, "Don't use HtnIPrimitiveTask.abort")
 	return false

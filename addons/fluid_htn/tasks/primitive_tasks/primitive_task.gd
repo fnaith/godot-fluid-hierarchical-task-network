@@ -90,9 +90,9 @@ func stop(ctx: HtnIContext) -> bool:
 		return true
 	return false
 
-func aborted(ctx: HtnIContext) -> bool:
+func abort(ctx: HtnIContext) -> bool:
 	if null != _operator:
-		_operator.aborted(ctx)
+		_operator.abort(ctx)
 		return true
 	return false
 
