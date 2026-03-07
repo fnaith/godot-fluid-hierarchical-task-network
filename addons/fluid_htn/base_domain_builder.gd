@@ -154,11 +154,11 @@ func executing_condition(name: String, condition: Callable) -> HtnDomainBuilder:
 #region OPERATORS
 
 ## The operator of an Action / primitive task.
-func do(action, force_stop_action = null) -> HtnDomainBuilder:
+func do(action, start = null, force_stop_action = null) -> HtnDomainBuilder:
 	var pointer = get_pointer()
 	if Htn.TaskType.PRIMITIVE == pointer.get_type():
 		var task: HtnIPrimitiveTask = pointer
-		var op = HtnFuncOperator.new(_context_script, action, force_stop_action)
+		var op = HtnFuncOperator.new(_context_script, action, start, force_stop_action)
 		task.set_operator(op)
 	else:
 		HtnError.set_message("Tried to add an Operator, but the Pointer is not a Primitive Task!")
