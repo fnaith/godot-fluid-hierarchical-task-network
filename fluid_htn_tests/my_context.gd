@@ -9,6 +9,7 @@ enum WorldState {
 
 ## Custom state
 var _done: bool = false
+var _execution_count: int = 0
 
 func _init() -> void:
 	super._init()
@@ -23,6 +24,12 @@ func is_done() -> bool:
 
 func set_done(done: bool) -> void:
 	_done = done
+
+func get_execution_count() -> int:
+	return _execution_count
+
+func set_execution_count(execution_count: int) -> void:
+	_execution_count = execution_count
 
 func init() -> void:
 	super.init()

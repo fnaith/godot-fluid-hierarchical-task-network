@@ -1,6 +1,5 @@
 ## A planner is a responsible for handling the management of finding plans in a domain, replan when the state of the
-## running plan
-## demands it, or look for a new potential plan if the world state gets dirty.
+## running plan demands it, or look for a new potential plan if the world state gets dirty.
 class_name HtnPlanner
 extends RefCounted
 
@@ -9,10 +8,9 @@ extends RefCounted
 ## Call this with a domain and context instance to have the planner manage plan and task handling for the domain at
 ## runtime.
 ## If the plan completes or fails, the planner will find a new plan, or if the context is marked dirty, the planner
-## will attempt
-## a replan to see whether we can find a better plan now that the state of the world has changed.
+## will attempt a replan to see whether we can find a better plan now that the state of the world has changed.
 ## This planner can also be used as a blueprint for writing a custom planner.
-func tick(domain: HtnIDomain, ctx: HtnIContext, allow_immediate_replan: bool = true) -> void:
+func tick(domain: HtnIDomain, ctx: HtnIContext, allow_immediate_replan_and_execute: bool = true) -> void:
 	if null == ctx:
 		HtnError.set_message("Context was not existed!")
 		return
@@ -37,11 +35,16 @@ func tick(domain: HtnIDomain, ctx: HtnIContext, allow_immediate_replan: bool = t
 		if !_select_next_task_in_plan(domain, ctx):
 			return
 
+		var current_task = ctx.get_planner_state().get_current_task()
+		if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
+			if !_try_start_primitive_task_operator(domain, ctx, current_task, allow_immediate_replan_and_execute):
+				return
+
 	# If the current task is a primitive task, we try to tick its operator.
 	var current_task = ctx.get_planner_state().get_current_task()
 	if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
 		var task: HtnIPrimitiveTask = current_task
-		if !_try_tick_primitive_task_operator(domain, ctx, task, allow_immediate_replan):
+		if !_try_tick_primitive_task_operator(domain, ctx, task, allow_immediate_replan_and_execute):
 			return
 
 	# Check whether the planner failed to find a plan
@@ -185,11 +188,44 @@ func _select_next_task_in_plan(domain: HtnDomain, ctx: HtnIContext) -> bool:
 
 	return true
 
-## While we have a valid primitive task running, we should tick it each tick of the plan execution.
-func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
+
+## When a new task is selected, we should run Start on its Operator.
+func _try_start_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan_and_execute: bool) -> bool:
 	var planner_state = ctx.get_planner_state()
 	if null != task.get_operator():
-		if !_is_executing_conditions_valid(domain, ctx, task, allow_immediate_replan):
+		var last_status = task.get_operator().start(ctx)
+		planner_state.set_last_status(last_status)
+
+		# If the operation finished successfully already on start, we set task to null so that we dequeue the next task in the plan the following tick.
+		if Htn.TaskStatus.SUCCESS == last_status:
+			# We have to first invoke that the task operator has run its start function successfully, before we report that the operator finished.
+			if null != planner_state.on_current_task_started:
+				planner_state.on_current_task_started.call(task)
+
+			_on_operator_finished_successfully(domain, ctx, task, allow_immediate_replan_and_execute)
+			return true
+
+		# If the operation failed to start, we need to fail the entire plan, so that we will replan the next tick.
+		if Htn.TaskStatus.FAILURE == last_status:
+			_fail_entire_plan(domain, ctx, task, allow_immediate_replan_and_execute)
+			return true
+
+		# Otherwise the operation started as expected, and we are ready to start running Update ticks on the operator.
+		if null != planner_state.on_current_task_started:
+			planner_state.on_current_task_started.call(task)
+		return true
+
+	# This should not really happen if a domain is set up properly.
+	task.abort(ctx)
+	planner_state.set_current_task(null)
+	planner_state.set_last_status(Htn.TaskStatus.FAILURE)
+	return true
+
+## While we have a valid primitive task running, we should tick it each tick of the plan execution.
+func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan_and_execute: bool) -> bool:
+	var planner_state = ctx.get_planner_state()
+	if null != task.get_operator():
+		if !_is_executing_conditions_valid(domain, ctx, task, allow_immediate_replan_and_execute):
 			return false
 
 		var last_status = task.get_operator().update(ctx)
@@ -197,12 +233,12 @@ func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task
 
 		# If the operation finished successfully, we set task to null so that we dequeue the next task in the plan the following tick.
 		if Htn.TaskStatus.SUCCESS == last_status:
-			_on_operator_finished_successfully(domain, ctx, task, allow_immediate_replan)
+			_on_operator_finished_successfully(domain, ctx, task, allow_immediate_replan_and_execute)
 			return true
 
 		# If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
 		if Htn.TaskStatus.FAILURE == last_status:
-			_fail_entire_plan(domain, ctx, task, allow_immediate_replan)
+			_fail_entire_plan(domain, ctx, task, allow_immediate_replan_and_execute)
 			return true
 
 		# Otherwise the operation isn't done yet and need to continue.
@@ -211,7 +247,7 @@ func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task
 		return true
 
 	# This should not really happen if a domain is set up properly.
-	task.aborted(ctx)
+	task.abort(ctx)
 	planner_state.set_current_task(null)
 	planner_state.set_last_status(Htn.TaskStatus.FAILURE)
 	return true
@@ -235,11 +271,11 @@ func _is_conditions_valid(ctx: HtnIContext) -> bool:
 ## we prepare the context for a replan next tick.
 func _abort_task(ctx: HtnIContext, task: HtnIPrimitiveTask) -> void:
 	if null != task:
-		task.aborted(ctx)
+		task.abort(ctx)
 	_clear_plan_for_replan(ctx)
 
 ## If the operation finished successfully, we set task to null so that we dequeue the next task in the plan the following tick.
-func _on_operator_finished_successfully(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> void:
+func _on_operator_finished_successfully(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan_and_execute: bool) -> void:
 	var planner_state = ctx.get_planner_state()
 	if null != planner_state.on_current_task_completed_successfully:
 		planner_state.on_current_task_completed_successfully.call(task)
@@ -260,11 +296,11 @@ func _on_operator_finished_successfully(domain: HtnDomain, ctx: HtnIContext, tas
 
 		ctx.set_dirty(false)
 
-		if allow_immediate_replan:
+		if allow_immediate_replan_and_execute:
 			tick(domain, ctx, false)
 
 ## Ensure executing conditions are valid during plan execution
-func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
+func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan_and_execute: bool) -> bool:
 	var on_current_task_executing_condition_failed = ctx.get_planner_state().on_current_task_executing_condition_failed
 	for condition in task.get_executing_conditions():
 		# If a condition failed, then the plan failed to progress! A replan is required.
@@ -274,7 +310,7 @@ func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: H
 
 			_abort_task(ctx, task)
 
-			if allow_immediate_replan:
+			if allow_immediate_replan_and_execute:
 				tick(domain, ctx, false)
 
 			return false
@@ -282,15 +318,15 @@ func _is_executing_conditions_valid(domain: HtnDomain, ctx: HtnIContext, task: H
 	return true
 
 ## If the operation failed to finish, we need to fail the entire plan, so that we will replan the next tick.
-func _fail_entire_plan(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> void:
+func _fail_entire_plan(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan_and_execute: bool) -> void:
 	var planner_state = ctx.get_planner_state()
 	if null != planner_state.on_current_task_failed:
 		planner_state.on_current_task_failed.call(task)
 
-	task.aborted(ctx)
+	task.abort(ctx)
 	_clear_plan_for_replan(ctx)
 
-	if allow_immediate_replan:
+	if allow_immediate_replan_and_execute:
 		tick(domain, ctx, false)
 
 ## Prepare the planner state and context for a clean replan
