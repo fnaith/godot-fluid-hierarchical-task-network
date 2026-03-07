@@ -75,6 +75,10 @@ var on_apply_effect = func (_effect: HtnIEffect):
 var on_current_task_failed = func (_task: HtnIPrimitiveTask):
 	pass
 
+## OnCurrentTaskStarted(task) is called once when a new task in the plan is selected.
+var on_current_task_started = func (_task: HtnIPrimitiveTask):
+	pass
+
 ## OnCurrentTaskContinues(task) is called every tick that a currently running task
 ## needs to continue.
 var on_current_task_continues = func (_task: HtnIPrimitiveTask):

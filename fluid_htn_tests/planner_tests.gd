@@ -214,6 +214,69 @@ static func on_new_task_condition_failed__expected_behavior() -> void:
 	HtnError.add_assert(result["test"])
 	HtnError.add_assert("" == HtnError.get_message())
 
+static func on_start_new_task__expected_behavior() -> void:
+	var result = { "test": false }
+	var ctx = MyContext.new()
+	ctx.init()
+	var planner = HtnPlanner.new()
+	ctx.get_planner_state().on_current_task_started = func (t):
+		result["test"] = ("Sub-task" == t.get_name())
+	var domain = HtnDomain.new("Test")
+	var task1 = HtnSelector.new("Test")
+	var task2 = HtnPrimitiveTask.new("Sub-task")
+	task2.set_operator(HtnFuncOperator.new(MyContext, func (_context):
+		return Htn.TaskStatus.CONTINUE, func (_context):
+		return Htn.TaskStatus.CONTINUE))
+	domain.add_subtask(domain.get_root(), task1)
+	domain.add_subtask(task1, task2)
+
+	planner.tick(domain, ctx)
+
+	HtnError.add_assert(result["test"])
+	HtnError.add_assert("" == HtnError.get_message())
+
+static func start_new_task_can_complete_task__expected_behavior() -> void:
+	var result = { "test": false }
+	var ctx = MyContext.new()
+	ctx.init()
+	var planner = HtnPlanner.new()
+	ctx.get_planner_state().on_current_task_completed_successfully = func (t):
+		result["test"] = ("Sub-task" == t.get_name())
+	var domain = HtnDomain.new("Test")
+	var task1 = HtnSelector.new("Test")
+	var task2 = HtnPrimitiveTask.new("Sub-task")
+	task2.set_operator(HtnFuncOperator.new(MyContext, func (_context):
+		return Htn.TaskStatus.CONTINUE, func (_context):
+		return Htn.TaskStatus.SUCCESS))
+	domain.add_subtask(domain.get_root(), task1)
+	domain.add_subtask(task1, task2)
+
+	planner.tick(domain, ctx)
+
+	HtnError.add_assert(result["test"])
+	HtnError.add_assert("" == HtnError.get_message())
+
+static func start_new_task_can_fail_task__expected_behavior() -> void:
+	var result = { "test": false }
+	var ctx = MyContext.new()
+	ctx.init()
+	var planner = HtnPlanner.new()
+	ctx.get_planner_state().on_current_task_failed = func (t):
+		result["test"] = ("Sub-task" == t.get_name())
+	var domain = HtnDomain.new("Test")
+	var task1 = HtnSelector.new("Test")
+	var task2 = HtnPrimitiveTask.new("Sub-task")
+	task2.set_operator(HtnFuncOperator.new(MyContext, func (_context):
+		return Htn.TaskStatus.CONTINUE, func (_context):
+		return Htn.TaskStatus.FAILURE))
+	domain.add_subtask(domain.get_root(), task1)
+	domain.add_subtask(task1, task2)
+
+	planner.tick(domain, ctx)
+
+	HtnError.add_assert(result["test"])
+	HtnError.add_assert("" == HtnError.get_message())
+
 static func on_stop_current_task__expected_behavior() -> void:
 	var result = { "test": false }
 	var ctx = MyContext.new()
@@ -693,6 +756,12 @@ static func run() -> void:
 	on_new_task__expected_behavior()
 	HtnError.reset_message()
 	on_new_task_condition_failed__expected_behavior()
+	HtnError.reset_message()
+	on_start_new_task__expected_behavior()
+	HtnError.reset_message()
+	start_new_task_can_complete_task__expected_behavior()
+	HtnError.reset_message()
+	start_new_task_can_fail_task__expected_behavior()
 	HtnError.reset_message()
 	on_stop_current_task__expected_behavior()
 	HtnError.reset_message()

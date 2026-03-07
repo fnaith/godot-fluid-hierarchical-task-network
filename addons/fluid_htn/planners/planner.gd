@@ -37,6 +37,11 @@ func tick(domain: HtnIDomain, ctx: HtnIContext, allow_immediate_replan: bool = t
 		if !_select_next_task_in_plan(domain, ctx):
 			return
 
+		var current_task = ctx.get_planner_state().get_current_task()
+		if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
+			if !_try_start_primitive_task_operator(domain, ctx, current_task, allow_immediate_replan):
+				return
+
 	# If the current task is a primitive task, we try to tick its operator.
 	var current_task = ctx.get_planner_state().get_current_task()
 	if null != current_task and Htn.TaskType.PRIMITIVE == current_task.get_type():
@@ -185,6 +190,39 @@ func _select_next_task_in_plan(domain: HtnDomain, ctx: HtnIContext) -> bool:
 
 	return true
 
+
+## When a new task is selected, we should run Start on its Operator.
+func _try_start_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
+	var planner_state = ctx.get_planner_state()
+	if null != task.get_operator():
+		var last_status = task.get_operator().start(ctx)
+		planner_state.set_last_status(last_status)
+
+		# If the operation finished successfully already on start, we set task to null so that we dequeue the next task in the plan the following tick.
+		if Htn.TaskStatus.SUCCESS == last_status:
+			# We have to first invoke that the task operator has run its start function successfully, before we report that the operator finished.
+			if null != planner_state.on_current_task_started:
+				planner_state.on_current_task_started.call(task)
+
+			_on_operator_finished_successfully(domain, ctx, task, allow_immediate_replan)
+			return true
+
+		# If the operation failed to start, we need to fail the entire plan, so that we will replan the next tick.
+		if Htn.TaskStatus.FAILURE == last_status:
+			_fail_entire_plan(domain, ctx, task, allow_immediate_replan)
+			return true
+
+		# Otherwise the operation started as expected, and we are ready to start running Update ticks on the operator.
+		if null != planner_state.on_current_task_started:
+			planner_state.on_current_task_started.call(task)
+		return true
+
+	# This should not really happen if a domain is set up properly.
+	task.abort(ctx)
+	planner_state.set_current_task(null)
+	planner_state.set_last_status(Htn.TaskStatus.FAILURE)
+	return true
+
 ## While we have a valid primitive task running, we should tick it each tick of the plan execution.
 func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveTask, allow_immediate_replan: bool) -> bool:
 	var planner_state = ctx.get_planner_state()
@@ -211,7 +249,7 @@ func _try_tick_primitive_task_operator(domain: HtnDomain, ctx: HtnIContext, task
 		return true
 
 	# This should not really happen if a domain is set up properly.
-	task.aborted(ctx)
+	task.abort(ctx)
 	planner_state.set_current_task(null)
 	planner_state.set_last_status(Htn.TaskStatus.FAILURE)
 	return true
@@ -235,7 +273,7 @@ func _is_conditions_valid(ctx: HtnIContext) -> bool:
 ## we prepare the context for a replan next tick.
 func _abort_task(ctx: HtnIContext, task: HtnIPrimitiveTask) -> void:
 	if null != task:
-		task.aborted(ctx)
+		task.abort(ctx)
 	_clear_plan_for_replan(ctx)
 
 ## If the operation finished successfully, we set task to null so that we dequeue the next task in the plan the following tick.
@@ -287,7 +325,7 @@ func _fail_entire_plan(domain: HtnDomain, ctx: HtnIContext, task: HtnIPrimitiveT
 	if null != planner_state.on_current_task_failed:
 		planner_state.on_current_task_failed.call(task)
 
-	task.aborted(ctx)
+	task.abort(ctx)
 	_clear_plan_for_replan(ctx)
 
 	if allow_immediate_replan:

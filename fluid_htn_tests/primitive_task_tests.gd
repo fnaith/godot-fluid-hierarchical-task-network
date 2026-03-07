@@ -63,8 +63,8 @@ static func apply_effects__expected_behavior() -> void:
 static func stop_with_valid_operator__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	var task = HtnPrimitiveTask.new("Test")
-	task.set_operator(HtnFuncOperator.new(MyContext, null, func (context):
-		context.set_done(true)))
+	task.set_operator(HtnFuncOperator.new(MyContext, null, null, func (context):
+		context.set_done(true), null))
 
 	var result = task.stop(ctx)
 
@@ -73,13 +73,13 @@ static func stop_with_valid_operator__expected_behavior() -> void:
 	HtnError.add_assert(ctx.is_done())
 	HtnError.add_assert("" == HtnError.get_message())
 
-static func aborted_with_valid_operator__expected_behavior() -> void:
+static func abort_with_valid_operator__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	var task = HtnPrimitiveTask.new("Test")
-	task.set_operator(HtnFuncOperator.new(MyContext, null, null, func (context):
+	task.set_operator(HtnFuncOperator.new(MyContext, null, null, null, func (context):
 		context.set_done(true)))
 
-	var result = task.aborted(ctx)
+	var result = task.abort(ctx)
 
 	HtnError.add_assert(result)
 	HtnError.add_assert(null != task.get_operator())
@@ -95,11 +95,11 @@ static func stop_with_null_operator__expected_behavior() -> void:
 	HtnError.add_assert(!result)
 	HtnError.add_assert("" == HtnError.get_message())
 
-static func aborted_with_null_operator__expected_behavior() -> void:
+static func abort_with_null_operator__expected_behavior() -> void:
 	var ctx = MyContext.new()
 	var task = HtnPrimitiveTask.new("Test")
 
-	var result = task.aborted(ctx)
+	var result = task.abort(ctx)
 
 	HtnError.add_assert(!result)
 	HtnError.add_assert("" == HtnError.get_message())
@@ -134,10 +134,10 @@ static func run() -> void:
 	HtnError.reset_message()
 	stop_with_valid_operator__expected_behavior()
 	HtnError.reset_message()
-	aborted_with_valid_operator__expected_behavior()
+	abort_with_valid_operator__expected_behavior()
 	HtnError.reset_message()
 	stop_with_null_operator__expected_behavior()
 	HtnError.reset_message()
-	aborted_with_null_operator__expected_behavior()
+	abort_with_null_operator__expected_behavior()
 	HtnError.reset_message()
 	is_valid__expected_behavior()
