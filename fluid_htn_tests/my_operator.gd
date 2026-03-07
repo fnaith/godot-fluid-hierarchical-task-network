@@ -1,11 +1,14 @@
 class_name MyOperator
 extends HtnIOperator
 
+func start(_ctx: HtnIContext) -> Htn.TaskStatus:
+	return Htn.TaskStatus.CONTINUE
+
 func update(_ctx: HtnIContext) -> Htn.TaskStatus:
 	return Htn.TaskStatus.CONTINUE
 
 func stop(_ctx: HtnIContext) -> bool:
 	return false
 
-func aborted(_ctx: HtnIContext) -> bool:
+func abort(_ctx: HtnIContext) -> bool:
 	return false

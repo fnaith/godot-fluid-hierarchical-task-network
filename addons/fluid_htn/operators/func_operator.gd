@@ -26,6 +26,7 @@ func is_context_script(ctx: HtnIContext) -> bool:
 #region FIELDS
 
 var _fn = _DEFAULT_FUNC
+var _start = _DEFAULT_FUNC
 var _fn_stop = _DEFAULT_ACT
 var _fn_aborted = _DEFAULT_ACT
 
@@ -33,15 +34,25 @@ var _fn_aborted = _DEFAULT_ACT
 
 #region CONSTRUCTION
 
-func _init(context_script: Script, fn, fn_stop = null, fn_aborted = null) -> void:
+func _init(context_script: Script, fn, start = null, fn_stop = null, fn_aborted = null) -> void:
 	_context_script = context_script
 	_fn = fn
+	_start = start
 	_fn_stop = fn_stop
 	_fn_aborted = fn_aborted
 
 #endregion
 
 #region FUNCTIONALITY
+
+func start(ctx: HtnIContext) -> Htn.TaskStatus:
+	assert(is_context_script(ctx))
+	if _expected_context_type:
+		if _start != null:
+			return _start.call(ctx)
+		return Htn.TaskStatus.CONTINUE # Start is not required, so report back Continue if we have no Start func.
+	HtnError.set_message("Unexpected context type!")
+	return Htn.TaskStatus.FAILURE
 
 func update(ctx: HtnIContext) -> Htn.TaskStatus:
 	assert(is_context_script(ctx))
@@ -60,7 +71,7 @@ func stop(ctx: HtnIContext) -> bool:
 	HtnError.set_message("Unexpected context type!")
 	return false
 
-func aborted(ctx: HtnIContext) -> bool:
+func abort(ctx: HtnIContext) -> bool:
 	assert(is_context_script(ctx))
 	if _expected_context_type:
 		if null != _fn_aborted:
